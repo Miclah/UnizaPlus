@@ -1,0 +1,48 @@
+﻿@page
+@model ScheduleScrapeModel
+@{
+    ViewData["Title"] = "Refresh Schedule Data";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Refresh Schedule Data</h1>
+    
+    @if (Model.IsSuccess)
+    {
+        <div class="alert alert-success">
+            Schedule data refreshed successfully!
+        </div>
+        <a asp-page="Index" class="btn btn-primary">Go to Schedule</a>
+    }
+    else if (Model.IsError)
+    {
+        <div class="alert alert-danger">
+            Error refreshing schedule data: @Model.ErrorMessage
+        </div>
+    }
+    else
+    {
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Enter UNIZA Credentials</h5>
+                <p>Your credentials will be used to access the vzdelavanie.uniza.sk system and extract your schedule.</p>
+                
+                <form method="post">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                        <div class="form-text">Your credentials are used only for authentication and are not stored.</div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Refresh Schedule Data</button>
+                    <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,176 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "UNIZA Schedule";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>UNIZA Schedule</h1>
+        <div>
+            <a asp-page="ScheduleEdit" asp-route-id="-1" class="btn btn-success me-2">Add New Item</a>
+            <a asp-page="Index" asp-route-refresh="true" class="btn btn-primary">Refresh Schedule Data</a>
+        </div>
+    </div>
+
+    @if (Model.IsScrapingInProgress)
+    {
+        <div class="alert alert-info">
+            Refreshing schedule data. This may take several minutes...
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">
+            @Model.ErrorMessage
+        </div>
+    }
+
+    <div class="schedule-container">
+        <div class="schedule-grid">
+            <div class="header-cell"></div>
+            @for (int hour = 7; hour <= 20; hour++)
+            {
+                <div class="header-cell">@hour:00</div>
+            }
+
+            @foreach (var day in Model.Days)
+            {
+                <div class="day-cell">@day</div>
+
+                @for (int hour = 7; hour <= 20; hour++)
+                {
+                    <div class="hour-cell"
+                         data-day="@day"
+                         data-hour="@hour"
+                         ondragover="handleDragOver(e)" 
+                         ondrop="handleDrop(e)"
+                         ondragenter="handleDragEnter(e)"
+                         ondragleave="handleDragLeave(e)">
+
+                        @{
+                            var items = Model.ScheduleItems.Where(i => i.Day == day && i.StartHour == hour).ToList();
+
+                            foreach (var item in items)
+                            {
+                                <div class="schedule-item type-@item.Type"
+                                     draggable="true"
+                                     data-id="@item.Id"
+                                     data-duration="@item.Duration" 
+                                     data-day="@day"
+                                     data-hour="@hour"
+                                     ondragstart="handleDragStart(event)"
+                                     ondragend="handleDragEnd(event)"
+                                     onclick="viewDetails(@item.Id, event)">
+                                    <div class="item-header">@item.StartHour:00 - @(item.StartHour + item.Duration):00 (ID:@item.Id)</div>
+                                    <div class="item-subject">@item.Subject</div>
+                                    <div class="item-details">
+                                        <span>@item.Type</span>
+                                        <span title="@item.Professor">@(item.Professor.Length > 20 ? item.Professor.Substring(0, 20) + "..." : item.Professor)</span>
+                                        <span>@item.Classroom</span>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let draggedItemId = null;
+        let draggedItemDuration = 1;
+
+        function handleDragStart(evt) {
+            const item = evt.target.closest('.schedule-item');
+            if (!item) return;
+            
+            draggedItemId = item.dataset.id;
+            draggedItemDuration = parseInt(item.dataset.duration);
+            
+            item.classList.add('dragging');
+            
+            evt.dataTransfer.effectAllowed = "move";
+            evt.dataTransfer.setData("application/json", JSON.stringify({
+                id: draggedItemId,
+                duration: draggedItemDuration
+            }));
+        }
+
+        function handleDragOver(evt) {
+            evt.preventDefault();
+            evt.dataTransfer.dropEffect = "move";
+        }
+
+        function handleDragEnter(evt) {
+            evt.preventDefault();
+            evt.currentTarget.classList.add('drop-hover');
+        }
+
+        function handleDragLeave(evt) {
+            evt.currentTarget.classList.remove('drop-hover');
+        }
+
+        function handleDragEnd(evt) {
+            evt.target.classList.remove('dragging');
+            document.querySelectorAll('.hour-cell').forEach(cell => {
+                cell.classList.remove('drop-hover');
+            });
+        }
+        
+        function viewDetails(id, evt) {
+            if (evt) {
+                evt.stopPropagation();
+            }
+            window.location.href = `/ScheduleDetail/${id}`;
+        }
+
+        async function handleDrop(evt) {
+            evt.preventDefault();
+            
+            document.querySelectorAll('.hour-cell').forEach(cell => {
+                cell.classList.remove('drop-hover');
+            });
+
+            const targetCell = evt.currentTarget;
+            const day = targetCell.dataset.day;
+            const hour = parseInt(targetCell.dataset.hour);
+            
+            if (!draggedItemId) return;
+
+            try {
+                const itemId = parseInt(draggedItemId);
+                
+                if (isNaN(itemId) || itemId <= 0) {
+                    alert("Cannot move item: invalid item identifier");
+                    return;
+                }
+
+                const response = await fetch('/api/schedule/move', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: itemId,
+                        day: day,
+                        startHour: hour
+                    })
+                });
+
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    const errorText = await response.text();
+                    alert(`Failed to move item: ${errorText}`);
+                }
+            } catch (error) {
+                alert('An error occurred when trying to move the item.');
+            } finally {
+                draggedItemId = null;
+                draggedItemDuration = 1;
+            }
+        }
+    </script>
+}

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36121.58
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnizaPlusBackEnd", "UnizaPlusBackEnd\UnizaPlusBackEnd.csproj", "{1A55FBF0-8154-4932-8FAC-470644D30C3C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnizaPlus.Web", "UnizaPlus.Web\UnizaPlus.Web.csproj", "{0A5D08F5-363B-4AB8-AC9C-CBC241E2E655}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1A55FBF0-8154-4932-8FAC-470644D30C3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A55FBF0-8154-4932-8FAC-470644D30C3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A55FBF0-8154-4932-8FAC-470644D30C3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A55FBF0-8154-4932-8FAC-470644D30C3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A5D08F5-363B-4AB8-AC9C-CBC241E2E655}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A5D08F5-363B-4AB8-AC9C-CBC241E2E655}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A5D08F5-363B-4AB8-AC9C-CBC241E2E655}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A5D08F5-363B-4AB8-AC9C-CBC241E2E655}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FD200536-18EC-4EBE-9DB9-B655CC0664E5}
+	EndGlobalSection
+EndGlobal
