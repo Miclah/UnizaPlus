@@ -188,7 +188,7 @@ namespace UnizaPlus.Web.Services
                 return null;
             }
         }
-        private ScheduleItem ParseCsvScheduleItem(string line)
+        internal ScheduleItem ParseCsvScheduleItem(string line)
         {
             try
             {

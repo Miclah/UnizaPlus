@@ -321,7 +321,7 @@ namespace UnizaPlus.Services
             }
         }
 
-        private string GetClassType(string className)
+        internal string GetClassType(string className)
         {
             if (className.Contains("-pv"))
                 return "L"; 
