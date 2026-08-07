@@ -87,6 +87,10 @@ namespace UnizaPlus.Services
                     {
                         var block = blocks[i];
                         var blockClass = block.GetAttribute("class");
+                        if (blockClass == null)
+                        {
+                            continue;
+                        }
                         var classType = GetClassType(blockClass);
 
                         if (classType != "")
@@ -101,7 +105,7 @@ namespace UnizaPlus.Services
 
                             int blockIndex = i + 1;
                             while (blockIndex < blocks.Count &&
-                                   blocks[blockIndex].GetAttribute("class").Contains("-c"))
+                                   blocks[blockIndex].GetAttribute("class")?.Contains("-c") == true)
                             {
                                 item.Duration++;
                                 i++;
@@ -156,9 +160,9 @@ namespace UnizaPlus.Services
                     item.Subject = links[2].Text;
                     item.StudentGroups = links[3].Text;
 
-                    item.ProfessorLink = links[0].GetAttribute("href");
-                    item.ClassroomLink = links[1].GetAttribute("href");
-                    item.SubjectLink = links[2].GetAttribute("href");
+                    item.ProfessorLink = links[0].GetAttribute("href") ?? string.Empty;
+                    item.ClassroomLink = links[1].GetAttribute("href") ?? string.Empty;
+                    item.SubjectLink = links[2].GetAttribute("href") ?? string.Empty;
                     return true;
                 }
             }

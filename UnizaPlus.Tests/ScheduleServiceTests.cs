@@ -84,6 +84,7 @@ public class ScheduleServiceTests
 
         var item = service.ParseCsvScheduleItem(line);
 
+        Assert.NotNull(item);
         Assert.Equal(1, item.Id);
         Assert.Equal("Pondelok", item.Day);
         Assert.Equal(8, item.StartHour);

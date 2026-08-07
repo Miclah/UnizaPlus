@@ -14,8 +14,8 @@ namespace UnizaPlusBackEnd
             Console.WriteLine("UnizaPlus - Schedule scraper");
             var scheduleItems = new List<ScheduleItem>();
 
-            string username = null;
-            string password = null;
+            string? username = null;
+            string? password = null;
 
             bool autoMode = false;
 

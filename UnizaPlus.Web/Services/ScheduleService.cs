@@ -7,11 +7,11 @@ namespace UnizaPlus.Web.Services
     public class ScheduleService
     {
         private readonly ILogger<ScheduleService> _logger;
-        private readonly ScraperService _scraperService;
+        private readonly ScraperService? _scraperService;
         private List<ScheduleItem> _scheduleItems = new();
         private readonly string _scheduleFilePath;
 
-        public ScheduleService(ILogger<ScheduleService> logger, ScraperService scraperService = null)
+        public ScheduleService(ILogger<ScheduleService> logger, ScraperService? scraperService = null)
         {
             _logger = logger;
             _scraperService = scraperService;
@@ -188,7 +188,7 @@ namespace UnizaPlus.Web.Services
                 return null;
             }
         }
-        internal ScheduleItem ParseCsvScheduleItem(string line)
+        internal ScheduleItem? ParseCsvScheduleItem(string line)
         {
             try
             {
@@ -310,7 +310,7 @@ namespace UnizaPlus.Web.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error saving schedule items to file", ex);
+                _logger.LogError(ex, "Error saving schedule items to file");
             }
         }
 
