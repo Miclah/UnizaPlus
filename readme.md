@@ -59,7 +59,7 @@ By extracting schedule data directly from the official university portal, UnizaP
 - The project follows a service-oriented design pattern with clear separation between data acquisition, storage, and presentation layers.
 
 ### Technologies Used
-- **.NET 8** — Utilizes the latest features of C# and the .NET ecosystem.  
+- **.NET 10** — Utilizes the latest features of C# and the .NET ecosystem.  
 - **Selenium WebDriver** — Automates browser interaction for reliable data scraping.  
 - **Bootstrap** — Ensures responsive and modern frontend design.  
 - **JavaScript** — Enables dynamic UI behaviors such as drag-and-drop scheduling.  
@@ -89,7 +89,7 @@ UnizaPlus significantly enhances the university's scheduling system by addressin
 ## Getting Started
 
 ### Prerequisites
-- .NET 8.0 SDK  
+- .NET 10.0 SDK  
 - Google Chrome browser (required for Selenium)  
 - Internet connection for initial data scraping
 

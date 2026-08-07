@@ -39,7 +39,7 @@ namespace UnizaPlus.Web.Services
                 }
 
                 string projectDir = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\"));
-                string scraperPath = Path.Combine(projectDir, "UnizaPlusBackEnd", "bin", "Debug", "net8.0", "UnizaPlusBackEnd.exe");
+                string scraperPath = Path.Combine(projectDir, "UnizaPlusBackEnd", "bin", "Debug", "net10.0", "UnizaPlusBackEnd.exe");
 
                 var processInfo = new ProcessStartInfo
                 {
@@ -99,7 +99,7 @@ namespace UnizaPlus.Web.Services
             try
             {
                 string projectDir = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\"));
-                string scraperPath = Path.Combine(projectDir, "UnizaPlusBackEnd", "bin", "Debug", "net8.0", "UnizaPlusBackEnd.exe");
+                string scraperPath = Path.Combine(projectDir, "UnizaPlusBackEnd", "bin", "Debug", "net10.0", "UnizaPlusBackEnd.exe");
                 string username = "***REMOVED-USERNAME***";
                 string password = "***REMOVED-PASSWORD***";
 
