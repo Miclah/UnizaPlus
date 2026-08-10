@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using UnizaPlusBackEnd.Models;
+﻿using UnizaPlus.Models;
 
 namespace UnizaPlusBackEnd.Services
 {

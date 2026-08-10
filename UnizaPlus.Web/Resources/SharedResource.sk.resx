@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- Layout / navigation -->
+  <data name="Schedule" xml:space="preserve"><value>Rozvrh</value></data>
+  <data name="Export" xml:space="preserve"><value>Export</value></data>
+  <data name="Language" xml:space="preserve"><value>Jazyk</value></data>
+  <data name="Toggle navigation" xml:space="preserve"><value>Prepnúť navigáciu</value></data>
+  <data name="Schedule Manager" xml:space="preserve"><value>Správca rozvrhu</value></data>
+  <data name="Author" xml:space="preserve"><value>Autor</value></data>
+
+  <!-- Day names (canonical English values from ScheduleDays.All) -->
+  <data name="Monday" xml:space="preserve"><value>Pondelok</value></data>
+  <data name="Tuesday" xml:space="preserve"><value>Utorok</value></data>
+  <data name="Wednesday" xml:space="preserve"><value>Streda</value></data>
+  <data name="Thursday" xml:space="preserve"><value>Štvrtok</value></data>
+  <data name="Friday" xml:space="preserve"><value>Piatok</value></data>
+
+  <!-- Index page -->
+  <data name="UNIZA Schedule" xml:space="preserve"><value>Rozvrh UNIZA</value></data>
+  <data name="Manage your UNIZA class schedule online: add, edit, and drag-and-drop classes in an interactive weekly view." xml:space="preserve"><value>Spravujte si rozvrh UNIZA online: pridávajte, upravujte a presúvajte predmety v interaktívnom týždennom zobrazení.</value></data>
+  <data name="Add New Item" xml:space="preserve"><value>Pridať novú položku</value></data>
+  <data name="Upload CSV" xml:space="preserve"><value>Nahrať CSV</value></data>
+  <data name="Refresh Schedule Data" xml:space="preserve"><value>Obnoviť údaje rozvrhu</value></data>
+  <data name="Reset" xml:space="preserve"><value>Vynulovať</value></data>
+  <data name="Refreshing schedule data. This may take several minutes..." xml:space="preserve"><value>Obnovujú sa údaje rozvrhu. Môže to trvať niekoľko minút...</value></data>
+  <data name="Your schedule is empty." xml:space="preserve"><value>Váš rozvrh je prázdny.</value></data>
+  <data name="Use &lt;strong&gt;Add New Item&lt;/strong&gt; to create entries by hand, &lt;strong&gt;Upload CSV&lt;/strong&gt; to load a schedule from a file, or &lt;strong&gt;Reset&lt;/strong&gt; to load the sample schedule." xml:space="preserve"><value>Použite &lt;strong&gt;Pridať novú položku&lt;/strong&gt; na ručné vytvorenie záznamov, &lt;strong&gt;Nahrať CSV&lt;/strong&gt; na načítanie rozvrhu zo súboru, alebo &lt;strong&gt;Vynulovať&lt;/strong&gt; na načítanie vzorového rozvrhu.</value></data>
+  <data name="Lecture (P)" xml:space="preserve"><value>Prednáška (P)</value></data>
+  <data name="Exercise (C)" xml:space="preserve"><value>Cvičenie (C)</value></data>
+  <data name="Lab (L)" xml:space="preserve"><value>Laboratórium (L)</value></data>
+  <data name="{0} conflicting item: drag it to a free slot to resolve" xml:space="preserve"><value>{0} kolidujúca položka: presuňte ju na voľné miesto, aby ste konflikt vyriešili</value></data>
+  <data name="{0} conflicting items: drag one to a free slot to resolve" xml:space="preserve"><value>{0} kolidujúcich položiek: presuňte niektorú na voľné miesto, aby ste konflikt vyriešili</value></data>
+  <data name="No classes." xml:space="preserve"><value>Žiadne hodiny.</value></data>
+  <data name="Conflict: overlaps with another item" xml:space="preserve"><value>Konflikt: prekrýva sa s inou položkou</value></data>
+  <data name="Conflicts with another item" xml:space="preserve"><value>Koliduje s inou položkou</value></data>
+  <data name="Cannot move item: invalid item identifier" xml:space="preserve"><value>Položku nie je možné presunúť: neplatný identifikátor položky</value></data>
+  <data name="Failed to move item: {0}" xml:space="preserve"><value>Presun položky zlyhal: {0}</value></data>
+  <data name="An error occurred when trying to move the item." xml:space="preserve"><value>Pri presúvaní položky nastala chyba.</value></data>
+  <data name="Failed to refresh schedule data. Please try again later." xml:space="preserve"><value>Obnovenie údajov rozvrhu zlyhalo. Skúste to prosím neskôr.</value></data>
+  <data name="Lecture" xml:space="preserve"><value>Prednáška</value></data>
+  <data name="Exercise" xml:space="preserve"><value>Cvičenie</value></data>
+  <data name="Lab" xml:space="preserve"><value>Laboratórium</value></data>
+
+  <!-- Index page statistics panel -->
+  <data name="hours / week" xml:space="preserve"><value>hodín / týždeň</value></data>
+  <data name="P / C / L" xml:space="preserve"><value>P / C / L</value></data>
+  <data name="gaps between classes" xml:space="preserve"><value>medzery medzi hodinami</value></data>
+  <data name="earliest start" xml:space="preserve"><value>najskorší začiatok</value></data>
+  <data name="latest end" xml:space="preserve"><value>najneskorší koniec</value></data>
+  <data name="free days" xml:space="preserve"><value>voľné dni</value></data>
+
+  <!-- Upload schedule page -->
+  <data name="Upload custom schedule (CSV)" xml:space="preserve"><value>Nahrať vlastný rozvrh (CSV)</value></data>
+  <data name="CSV format" xml:space="preserve"><value>Formát CSV</value></data>
+  <data name="Header (required columns &lt;code&gt;Subject,Type,Day,Start,End&lt;/code&gt;; the rest are optional):" xml:space="preserve"><value>Hlavička (povinné stĺpce &lt;code&gt;Subject,Type,Day,Start,End&lt;/code&gt;, ostatné voliteľné):</value></data>
+  <data name="Type: &lt;code&gt;P&lt;/code&gt; (lecture), &lt;code&gt;C&lt;/code&gt; (exercise) or &lt;code&gt;L&lt;/code&gt; (laboratory exercise)." xml:space="preserve"><value>Type: &lt;code&gt;P&lt;/code&gt; (prednáška), &lt;code&gt;C&lt;/code&gt; (cvičenie) alebo &lt;code&gt;L&lt;/code&gt; (laboratórne cvičenie).</value></data>
+  <data name="Day: &lt;code&gt;Monday&lt;/code&gt;-&lt;code&gt;Friday&lt;/code&gt; (Slovak names such as &lt;code&gt;Pondelok&lt;/code&gt; are also accepted, for files uploaded under the old interface). Start/End: hour 7-21." xml:space="preserve"><value>Day: &lt;code&gt;Monday&lt;/code&gt;-&lt;code&gt;Friday&lt;/code&gt; (akceptujú sa aj slovenské názvy ako &lt;code&gt;Pondelok&lt;/code&gt;, kvôli súborom nahratým pod starším rozhraním). Start/End: hodina 7-21.</value></data>
+  <data name="Rows with a missing or invalid value are skipped; they do not cause an application error." xml:space="preserve"><value>Riadky s chýbajúcim alebo neplatným údajom sa preskočia, nespôsobia chybu aplikácie.</value></data>
+  <data name="Upload" xml:space="preserve"><value>Nahrať</value></data>
+  <data name="Please select a CSV file." xml:space="preserve"><value>Vyberte, prosím, CSV súbor.</value></data>
+  <data name="The file must have a .csv extension." xml:space="preserve"><value>Súbor musí mať príponu .csv.</value></data>
+  <data name="The file could not be processed: {0}" xml:space="preserve"><value>Súbor sa nepodarilo spracovať: {0}</value></data>
+  <data name="Uploaded {0} items. Skipped rows: {1} (reasons are in the application log)." xml:space="preserve"><value>Nahraných {0} položiek. Preskočených riadkov: {1} (dôvody sú v logu aplikácie).</value></data>
+  <data name="Uploaded {0} items." xml:space="preserve"><value>Nahraných {0} položiek.</value></data>
+
+  <!-- ScheduleCsvParser warnings -->
+  <data name="The file is empty." xml:space="preserve"><value>Súbor je prázdny.</value></data>
+  <data name="Missing required columns: {0}. Expected header: {1},Room,Teacher,Group,SubjectCode" xml:space="preserve"><value>Chýbajúce povinné stĺpce: {0}. Očakávaná hlavička: {1},Room,Teacher,Group,SubjectCode</value></data>
+  <data name="Row {0}: missing subject (Subject), row skipped." xml:space="preserve"><value>Riadok {0}: chýba predmet (Subject), riadok preskočený.</value></data>
+  <data name="Row {0}: invalid or missing day '{1}', row skipped." xml:space="preserve"><value>Riadok {0}: neplatný alebo chýbajúci deň '{1}', riadok preskočený.</value></data>
+  <data name="Row {0}: invalid or missing type '{1}' (expected P, C or L), row skipped." xml:space="preserve"><value>Riadok {0}: neplatný alebo chýbajúci typ '{1}' (očakávané P, C alebo L), riadok preskočený.</value></data>
+  <data name="Row {0}: invalid time range Start='{1}' End='{2}', row skipped." xml:space="preserve"><value>Riadok {0}: neplatný časový rozsah Start='{1}' End='{2}', riadok preskočený.</value></data>
+  <data name="Row {0}: time range Start={1} End={2} is outside the supported range ({3}-{4}, max duration {5}h), row skipped." xml:space="preserve"><value>Riadok {0}: časový rozsah Start={1} End={2} je mimo podporovaného rozsahu ({3}-{4}, max. trvanie {5}h), riadok preskočený.</value></data>
+
+  <!-- ScheduleController API messages -->
+  <data name="Invalid item ID" xml:space="preserve"><value>Neplatné ID položky</value></data>
+  <data name="Invalid day" xml:space="preserve"><value>Neplatný deň</value></data>
+  <data name="Schedule item not found" xml:space="preserve"><value>Položka rozvrhu nebola nájdená</value></data>
+  <data name="This time slot is already occupied or overlaps with another item" xml:space="preserve"><value>Tento časový slot je už obsadený alebo sa prekrýva s inou položkou</value></data>
+  <data name="An error occurred while processing your request" xml:space="preserve"><value>Pri spracovaní požiadavky nastala chyba</value></data>
+
+  <!-- ScheduleEdit page -->
+  <data name="Add Schedule Item" xml:space="preserve"><value>Pridať položku rozvrhu</value></data>
+  <data name="Edit Schedule Item" xml:space="preserve"><value>Upraviť položku rozvrhu</value></data>
+  <data name="Add New Schedule Item" xml:space="preserve"><value>Pridať novú položku rozvrhu</value></data>
+  <data name="Day" xml:space="preserve"><value>Deň</value></data>
+  <data name="Type" xml:space="preserve"><value>Typ</value></data>
+  <data name="Laboratory (L)" xml:space="preserve"><value>Laboratórium (L)</value></data>
+  <data name="Start Time" xml:space="preserve"><value>Čas začiatku</value></data>
+  <data name="Duration (hours)" xml:space="preserve"><value>Trvanie (hodiny)</value></data>
+  <data name="Subject" xml:space="preserve"><value>Predmet</value></data>
+  <data name="Subject Code" xml:space="preserve"><value>Kód predmetu</value></data>
+  <data name="Professor" xml:space="preserve"><value>Vyučujúci</value></data>
+  <data name="Classroom" xml:space="preserve"><value>Miestnosť</value></data>
+  <data name="Student Groups" xml:space="preserve"><value>Skupiny študentov</value></data>
+  <data name="Save" xml:space="preserve"><value>Uložiť</value></data>
+  <data name="Cancel" xml:space="preserve"><value>Zrušiť</value></data>
+  <data name="Subject is required." xml:space="preserve"><value>Predmet je povinný údaj.</value></data>
+  <data name="Professor is required." xml:space="preserve"><value>Vyučujúci je povinný údaj.</value></data>
+  <data name="Classroom is required." xml:space="preserve"><value>Miestnosť je povinný údaj.</value></data>
+  <data name="Invalid day." xml:space="preserve"><value>Neplatný deň.</value></data>
+  <data name="Duration must be between 1 and 4 hours." xml:space="preserve"><value>Trvanie musí byť medzi 1 a 4 hodinami.</value></data>
+  <data name="Start time must be between 7:00 and 20:00." xml:space="preserve"><value>Čas začiatku musí byť medzi 7:00 a 20:00.</value></data>
+  <data name="Invalid type." xml:space="preserve"><value>Neplatný typ.</value></data>
+  <data name="This time slot is already occupied or overlaps with another item." xml:space="preserve"><value>Tento časový slot je už obsadený alebo sa prekrýva s inou položkou.</value></data>
+
+  <!-- ScheduleDetail page -->
+  <data name="Schedule Item Details" xml:space="preserve"><value>Detaily položky rozvrhu</value></data>
+  <data name="Time" xml:space="preserve"><value>Čas</value></data>
+  <data name="Back to Schedule" xml:space="preserve"><value>Späť na rozvrh</value></data>
+  <data name="Edit" xml:space="preserve"><value>Upraviť</value></data>
+  <data name="Schedule item not found." xml:space="preserve"><value>Položka rozvrhu nebola nájdená.</value></data>
+  <data name="Laboratory Exercise" xml:space="preserve"><value>Laboratórne cvičenie</value></data>
+
+  <!-- ScheduleExport page -->
+  <data name="Export Schedule" xml:space="preserve"><value>Export rozvrhu</value></data>
+  <data name="Export Options" xml:space="preserve"><value>Možnosti exportu</value></data>
+  <data name="Download Schedule" xml:space="preserve"><value>Stiahnuť rozvrh</value></data>
+  <data name="Format" xml:space="preserve"><value>Formát</value></data>
+  <data name="CSV (re-uploadable)" xml:space="preserve"><value>CSV (dá sa spätne nahrať)</value></data>
+  <data name="iCalendar (.ics) - Google Calendar, Outlook, ..." xml:space="preserve"><value>iCalendar (.ics) - Google Calendar, Outlook, ...</value></data>
+  <data name="Semester start" xml:space="preserve"><value>Začiatok semestra</value></data>
+  <data name="The first week's classes are anchored here; each item repeats weekly on its own day from this date." xml:space="preserve"><value>Od tohto dátumu sa ukotví prvý týždeň hodín; každá položka sa potom opakuje týždenne vo svoj deň.</value></data>
+  <data name="Semester end" xml:space="preserve"><value>Koniec semestra</value></data>
+  <data name="Last day the weekly recurrence repeats until (RRULE UNTIL)." xml:space="preserve"><value>Posledný deň, do ktorého sa týždenné opakovanie opakuje (RRULE UNTIL).</value></data>
+  <data name="The semester end date must be on or after the start date." xml:space="preserve"><value>Dátum konca semestra musí byť rovnaký alebo neskorší ako dátum začiatku.</value></data>
+
+  <!-- Error page -->
+  <data name="Error" xml:space="preserve"><value>Chyba</value></data>
+  <data name="Error." xml:space="preserve"><value>Chyba.</value></data>
+  <data name="An error occurred while processing your request." xml:space="preserve"><value>Pri spracovaní vašej požiadavky nastala chyba.</value></data>
+  <data name="Request ID:" xml:space="preserve"><value>ID požiadavky:</value></data>
+  <data name="Development Mode" xml:space="preserve"><value>Vývojový režim</value></data>
+  <data name="Swapping to the &lt;strong&gt;Development&lt;/strong&gt; environment displays detailed information about the error that occurred." xml:space="preserve"><value>Prepnutím do prostredia &lt;strong&gt;Development&lt;/strong&gt; sa zobrazia podrobné informácie o chybe, ku ktorej došlo.</value></data>
+  <data name="&lt;strong&gt;The Development environment shouldn't be enabled for deployed applications.&lt;/strong&gt; It can result in displaying sensitive information from exceptions to end users. For local debugging, enable the &lt;strong&gt;Development&lt;/strong&gt; environment by setting the &lt;strong&gt;ASPNETCORE_ENVIRONMENT&lt;/strong&gt; environment variable to &lt;strong&gt;Development&lt;/strong&gt; and restarting the app." xml:space="preserve"><value>&lt;strong&gt;Prostredie Development by nemalo byť zapnuté v nasadených aplikáciách.&lt;/strong&gt; Mohlo by to viesť k zobrazeniu citlivých informácií z výnimiek koncovým používateľom. Pre lokálne ladenie zapnite prostredie &lt;strong&gt;Development&lt;/strong&gt; nastavením premennej prostredia &lt;strong&gt;ASPNETCORE_ENVIRONMENT&lt;/strong&gt; na hodnotu &lt;strong&gt;Development&lt;/strong&gt; a reštartovaním aplikácie.</value></data>
+
+  <!-- StatusCode page -->
+  <data name="Page not found" xml:space="preserve"><value>Stránka nenájdená</value></data>
+  <data name="The page you are looking for does not exist or has moved." xml:space="preserve"><value>Stránka, ktorú hľadáte, neexistuje alebo bola presunutá.</value></data>
+  <data name="Server error" xml:space="preserve"><value>Chyba servera</value></data>
+  <data name="Something went wrong on our end. Please try again later." xml:space="preserve"><value>Na našej strane nastala chyba. Skúste to prosím neskôr.</value></data>
+  <data name="Something went wrong" xml:space="preserve"><value>Niečo sa pokazilo</value></data>
+  <data name="An unexpected error occurred while handling your request." xml:space="preserve"><value>Pri spracovaní vašej požiadavky nastala neočakávaná chyba.</value></data>
+
+  <!-- Privacy page -->
+  <data name="Privacy Policy" xml:space="preserve"><value>Zásady ochrany osobných údajov</value></data>
+  <data name="Privacy policy body" xml:space="preserve"><value>UnizaPlus nevyžaduje účet a nesleduje návštevníkov. Váš rozvrh existuje iba v pamäti servera, viazanej na nevyhnutný súbor cookie relácie, počas najviac 30 minút nečinnosti - nič sa nezapisuje na disk, nezdieľa s tretími stranami ani neuchováva po skončení relácie.</value></data>
+
+  <!-- Generate Schedule page -->
+  <data name="Generate Schedule" xml:space="preserve"><value>Vygenerovať rozvrh</value></data>
+  <data name="Preferences" xml:space="preserve"><value>Preferencie</value></data>
+  <data name="Optional - used only to rank equally good schedules against each other, never to rule one out." xml:space="preserve"><value>Voliteľné - použije sa iba na zoradenie rovnako dobrých rozvrhov medzi sebou, nikdy na vylúčenie niektorého z nich.</value></data>
+  <data name="No classes before 9:00" xml:space="preserve"><value>Žiadne hodiny pred 9:00</value></data>
+  <data name="Minimise gaps between classes" xml:space="preserve"><value>Minimalizovať medzery medzi hodinami</value></data>
+  <data name="Keep Friday free" xml:space="preserve"><value>Voľný piatok</value></data>
+  <data name="{0} alternative group(s) found." xml:space="preserve"><value>Nájdených alternatívnych skupín: {0}.</value></data>
+  <data name="Your current schedule has no alternative groups (rows sharing the same subject and type but different group) to choose between - there is nothing to generate." xml:space="preserve"><value>Váš aktuálny rozvrh neobsahuje žiadne alternatívne skupiny (riadky s rovnakým predmetom a typom, ale rôznou skupinou), medzi ktorými by sa dalo vyberať - nie je čo generovať.</value></data>
+  <data name="Variant {0} of {1}" xml:space="preserve"><value>Variant {0} z {1}</value></data>
+  <data name="Previous" xml:space="preserve"><value>Predchádzajúci</value></data>
+  <data name="Next" xml:space="preserve"><value>Ďalší</value></data>
+  <data name="This variant has no time conflicts." xml:space="preserve"><value>Tento variant nemá žiadne časové konflikty.</value></data>
+  <data name="No fully conflict-free combination exists. This is the best variant found, with {0} remaining conflict(s)." xml:space="preserve"><value>Neexistuje kombinácia úplne bez konfliktov. Toto je najlepší nájdený variant, so {0} zostávajúcimi konfliktmi.</value></data>
+  <data name="Use this schedule" xml:space="preserve"><value>Použiť tento rozvrh</value></data>
+  <data name="Discard" xml:space="preserve"><value>Zahodiť</value></data>
+  <data name="Generated schedule applied - no time conflicts." xml:space="preserve"><value>Vygenerovaný rozvrh bol použitý - žiadne časové konflikty.</value></data>
+  <data name="Generated schedule applied with {0} remaining conflict(s) - no fully conflict-free combination was found." xml:space="preserve"><value>Vygenerovaný rozvrh bol použitý so {0} zostávajúcimi konfliktmi - kombinácia úplne bez konfliktov sa nenašla.</value></data>
+</root>

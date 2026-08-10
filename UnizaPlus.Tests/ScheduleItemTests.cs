@@ -1,4 +1,4 @@
-using UnizaPlusBackEnd.Models;
+using UnizaPlus.Models;
 
 namespace UnizaPlus.Tests;
 

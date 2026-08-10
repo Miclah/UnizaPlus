@@ -1,32 +1,43 @@
-﻿@page "{id:int}"
+@page "{id:int}"
 @model ScheduleEditModel
 @{
-    ViewData["Title"] = Model.IsNewItem ? "Add Schedule Item" : "Edit Schedule Item";
+    ViewData["Title"] = Model.IsNewItem ? Localizer["Add Schedule Item"] : Localizer["Edit Schedule Item"];
 }
 
 
 <div class="container mt-4">
-    <h1 class="mb-4">@(Model.IsNewItem ? "Add New Schedule Item" : "Edit Schedule Item")</h1>
+    <h1 class="mb-4">@(Model.IsNewItem ? Localizer["Add New Schedule Item"] : Localizer["Edit Schedule Item"])</h1>
 
     <div class="card">
         <div class="card-body">
+            <div asp-validation-summary="All" class="text-danger"></div>
             <form method="post">
                 <input type="hidden" asp-for="ScheduleItem.Id" />
                 <input type="hidden" asp-for="ScheduleItem.Color" />
 
-                <div class="mb-3">
-                    <label asp-for="ScheduleItem.Day" class="form-label">Day</label>
-                    <select asp-for="ScheduleItem.Day" class="form-select">
-                        @foreach (var day in Model.Days)
-                        {
-                            <option value="@day">@day</option>
-                        }
-                    </select>
+                <div class="row mb-3">
+                    <div class="col-12 col-md-6 mb-3 mb-md-0">
+                        <label asp-for="ScheduleItem.Day" class="form-label">@Localizer["Day"]</label>
+                        <select asp-for="ScheduleItem.Day" class="form-select">
+                            @foreach (var day in Model.Days)
+                            {
+                                <option value="@day">@Localizer[day]</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label asp-for="ScheduleItem.Type" class="form-label">@Localizer["Type"]</label>
+                        <select asp-for="ScheduleItem.Type" class="form-select">
+                            <option value="P">@Localizer["Lecture (P)"]</option>
+                            <option value="C">@Localizer["Exercise (C)"]</option>
+                            <option value="L">@Localizer["Laboratory (L)"]</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="row mb-3">
-                    <div class="col">
-                        <label asp-for="ScheduleItem.StartHour" class="form-label">Start Time</label>
+                    <div class="col-12 col-md-6 mb-3 mb-md-0">
+                        <label asp-for="ScheduleItem.StartHour" class="form-label">@Localizer["Start Time"]</label>
                         <select asp-for="ScheduleItem.StartHour" class="form-select">
                             @for (int hour = 7; hour <= 20; hour++)
                             {
@@ -34,8 +45,8 @@
                             }
                         </select>
                     </div>
-                    <div class="col">
-                        <label asp-for="ScheduleItem.Duration" class="form-label">Duration (hours)</label>
+                    <div class="col-12 col-md-6">
+                        <label asp-for="ScheduleItem.Duration" class="form-label">@Localizer["Duration (hours)"]</label>
                         <select asp-for="ScheduleItem.Duration" class="form-select">
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -45,43 +56,38 @@
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="ScheduleItem.Type" class="form-label">Type</label>
-                    <select asp-for="ScheduleItem.Type" class="form-select">
-                        <option value="P">Lecture (P)</option>
-                        <option value="C">Exercise (C)</option>
-                        <option value="L">Laboratory (L)</option>
-                    </select>
+                <div class="row mb-3">
+                    <div class="col-12 col-md-6 mb-3 mb-md-0">
+                        <label asp-for="ScheduleItem.Subject" class="form-label">@Localizer["Subject"]</label>
+                        <input asp-for="ScheduleItem.Subject" class="form-control" required />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label asp-for="ScheduleItem.SubjectCode" class="form-label">@Localizer["Subject Code"]</label>
+                        <input asp-for="ScheduleItem.SubjectCode" class="form-control" />
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="ScheduleItem.Subject" class="form-label">Subject</label>
-                    <input asp-for="ScheduleItem.Subject" class="form-control" required />
+                <div class="row mb-3">
+                    <div class="col-12 col-md-6 mb-3 mb-md-0">
+                        <label asp-for="ScheduleItem.Professor" class="form-label">@Localizer["Professor"]</label>
+                        <input asp-for="ScheduleItem.Professor" class="form-control" required />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label asp-for="ScheduleItem.Classroom" class="form-label">@Localizer["Classroom"]</label>
+                        <input asp-for="ScheduleItem.Classroom" class="form-control" required />
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="ScheduleItem.SubjectCode" class="form-label">Subject Code</label>
-                    <input asp-for="ScheduleItem.SubjectCode" class="form-control" />
-                </div>
-
-                <div class="mb-3">
-                    <label asp-for="ScheduleItem.Professor" class="form-label">Professor</label>
-                    <input asp-for="ScheduleItem.Professor" class="form-control" required />
-                </div>
-
-                <div class="mb-3">
-                    <label asp-for="ScheduleItem.Classroom" class="form-label">Classroom</label>
-                    <input asp-for="ScheduleItem.Classroom" class="form-control" required />
-                </div>
-
-                <div class="mb-3">
-                    <label asp-for="ScheduleItem.StudentGroups" class="form-label">Student Groups</label>
-                    <input asp-for="ScheduleItem.StudentGroups" class="form-control" />
+                <div class="row mb-3">
+                    <div class="col-12 col-md-6">
+                        <label asp-for="ScheduleItem.StudentGroups" class="form-label">@Localizer["Student Groups"]</label>
+                        <input asp-for="ScheduleItem.StudentGroups" class="form-control" />
+                    </div>
                 </div>
 
                 <div class="mt-4">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
+                    <a asp-page="Index" class="btn btn-secondary">@Localizer["Cancel"]</a>
                 </div>
             </form>
         </div>

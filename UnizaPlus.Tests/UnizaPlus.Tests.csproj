@@ -28,6 +28,7 @@
   <ItemGroup>
     <ProjectReference Include="..\UnizaPlus.Web\UnizaPlus.Web.csproj" />
     <ProjectReference Include="..\UnizaPlusBackEnd\UnizaPlusBackEnd.csproj" />
+    <ProjectReference Include="..\UnizaPlus.Models\UnizaPlus.Models.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,25 +1,70 @@
-﻿
 @page
 @model ScheduleExportModel
 @{
-    ViewData["Title"] = "Export Schedule";
+    ViewData["Title"] = Localizer["Export Schedule"];
 }
 
 <div class="container mt-4">
-    <h1 class="mb-4">Export Schedule</h1>
+    <h1 class="mb-4">@Localizer["Export Schedule"]</h1>
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">@Model.ErrorMessage</div>
+    }
 
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Export Options</h5>
+            <h5 class="card-title">@Localizer["Export Options"]</h5>
             <form method="post">
                 <div class="mb-3">
-                    <label class="form-label">Format: CSV</label>
-                    <input type="hidden" name="format" value="csv">
+                    <label class="form-label d-block">@Localizer["Format"]</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" asp-for="Format" id="format-csv" value="csv" />
+                        <label class="form-check-label" for="format-csv">@Localizer["CSV (re-uploadable)"]</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" asp-for="Format" id="format-ics" value="ics" />
+                        <label class="form-check-label" for="format-ics">@Localizer["iCalendar (.ics) - Google Calendar, Outlook, ..."]</label>
+                    </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Download Schedule</button>
-                <a asp-page="Index" class="btn btn-secondary">Back to Schedule</a>
+                <div id="ics-options" class="row mb-3">
+                    <div class="col-12 col-md-6 mb-3 mb-md-0">
+                        <label asp-for="SemesterStart" class="form-label">@Localizer["Semester start"]</label>
+                        <input asp-for="SemesterStart" class="form-control" type="date" />
+                        <div class="form-text">@Localizer["The first week's classes are anchored here; each item repeats weekly on its own day from this date."]</div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label asp-for="SemesterEnd" class="form-label">@Localizer["Semester end"]</label>
+                        <input asp-for="SemesterEnd" class="form-control" type="date" />
+                        <div class="form-text">@Localizer["Last day the weekly recurrence repeats until (RRULE UNTIL)."]</div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">@Localizer["Download Schedule"]</button>
+                <a asp-page="Index" class="btn btn-secondary">@Localizer["Back to Schedule"]</a>
             </form>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        (function () {
+            const icsRadio = document.getElementById("format-ics");
+            const csvRadio = document.getElementById("format-csv");
+            const icsOptions = document.getElementById("ics-options");
+            if (!icsRadio || !csvRadio || !icsOptions) {
+                return;
+            }
+
+            function sync() {
+                icsOptions.style.display = icsRadio.checked ? "" : "none";
+            }
+
+            icsRadio.addEventListener("change", sync);
+            csvRadio.addEventListener("change", sync);
+            sync();
+        })();
+    </script>
+}

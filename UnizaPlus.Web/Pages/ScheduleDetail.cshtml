@@ -1,10 +1,10 @@
 ﻿@page "{id:int}"
 @model ScheduleDetailModel
 @{
-    ViewData["Title"] = "Schedule Item Details";
+    ViewData["Title"] = Localizer["Schedule Item Details"];
 }
 <div class="container mt-4">
-    <h1 class="mb-4">Schedule Item Details</h1>
+    <h1 class="mb-4">@Localizer["Schedule Item Details"]</h1>
 
     @if (Model.ScheduleItem != null)
     {
@@ -15,7 +15,7 @@
             <div class="card-body">
                 <div class="row mb-3">
                     <div class="col-md-4">
-                        <strong>Professor:</strong>
+                        <strong>@Localizer["Professor"]:</strong>
                     </div>
                     <div class="col-md-8">
                         @Model.ScheduleItem.Professor
@@ -24,7 +24,7 @@
 
                 <div class="row mb-3">
                     <div class="col-md-4">
-                        <strong>Classroom:</strong>
+                        <strong>@Localizer["Classroom"]:</strong>
                     </div>
                     <div class="col-md-8">
                         @Model.ScheduleItem.Classroom
@@ -33,7 +33,7 @@
 
                 <div class="row mb-3">
                     <div class="col-md-4">
-                        <strong>Type:</strong>
+                        <strong>@Localizer["Type"]:</strong>
                     </div>
                     <div class="col-md-8">
                         @Model.GetClassTypeDescription(Model.ScheduleItem.Type)
@@ -42,16 +42,16 @@
 
                 <div class="row mb-3">
                     <div class="col-md-4">
-                        <strong>Time:</strong>
+                        <strong>@Localizer["Time"]:</strong>
                     </div>
                     <div class="col-md-8">
-                        @Model.ScheduleItem.Day, @Model.ScheduleItem.StartHour:00 - @(Model.ScheduleItem.StartHour + Model.ScheduleItem.Duration):00
+                        @Localizer[Model.ScheduleItem.Day], @Model.ScheduleItem.StartHour:00 - @(Model.ScheduleItem.StartHour + Model.ScheduleItem.Duration):00
                     </div>
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-md-4">
-                        <strong>Student Groups:</strong>
+                        <strong>@Localizer["Student Groups"]:</strong>
                     </div>
                     <div class="col-md-8">
                         @Model.ScheduleItem.StudentGroups
@@ -59,16 +59,16 @@
                 </div>
             </div>
             <div class="card-footer">
-                <a asp-page="Index" class="btn btn-primary">Back to Schedule</a>
-                <a asp-page="ScheduleEdit" asp-route-id="@Model.ScheduleItem.Id" class="btn btn-secondary">Edit</a>
+                <a asp-page="Index" class="btn btn-primary">@Localizer["Back to Schedule"]</a>
+                <a asp-page="ScheduleEdit" asp-route-id="@Model.ScheduleItem.Id" class="btn btn-secondary">@Localizer["Edit"]</a>
             </div>
         </div>
     }
     else
     {
         <div class="alert alert-warning">
-            Schedule item not found.
+            @Localizer["Schedule item not found."]
         </div>
-        <a asp-page="Index" class="btn btn-primary">Back to Schedule</a>
+        <a asp-page="Index" class="btn btn-primary">@Localizer["Back to Schedule"]</a>
     }
 </div>

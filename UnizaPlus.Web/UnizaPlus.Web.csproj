@@ -7,13 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UnizaPlusBackEnd\UnizaPlusBackEnd.csproj" />
+    <ProjectReference Include="..\UnizaPlus.Models\UnizaPlus.Models.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
       <_Parameter1>UnizaPlus.Tests</_Parameter1>
     </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\sample-data\schedule.csv" Link="sample-data\schedule.csv" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

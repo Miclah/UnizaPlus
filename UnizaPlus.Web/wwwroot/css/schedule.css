@@ -1,119 +1,194 @@
-﻿.schedule-container {
+/* ==========================================================================
+   Grid view (>= 900px) - hidden below that in favor of the day-list view.
+   ========================================================================== */
+
+.schedule-container {
     overflow-x: auto;
-    margin-bottom: 20px;
-    border: 1px solid #dee2e6;
-    border-radius: 5px;
+    margin-bottom: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface);
 }
 
 .schedule-grid {
     display: grid;
-    grid-template-columns: 100px repeat(14, minmax(80px, 1fr));
     width: 100%;
-    min-width: 1000px;
 }
 
 .header-cell {
-    background-color: #f8f9fa;
-    padding: 10px 6px;
-    font-weight: bold;
+    background-color: var(--color-bg);
+    padding: var(--space-3) var(--space-2);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-sm);
     text-align: center;
-    border-bottom: 2px solid #dee2e6;
-    border-right: 1px solid #dee2e6;
+    border-bottom: 2px solid var(--color-border);
+    border-right: 1px solid var(--color-border);
     position: sticky;
     top: 0;
     z-index: 5;
 }
 
 .day-cell {
-    background-color: #f8f9fa;
-    padding: 10px 6px;
-    font-weight: bold;
+    background-color: var(--color-bg);
+    padding: var(--space-3) var(--space-2);
+    font-weight: var(--fw-semibold);
     text-align: center;
-    border-right: 2px solid #dee2e6;
-    border-bottom: 1px solid #dee2e6;
+    border-right: 2px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
     position: sticky;
     left: 0;
     z-index: 1;
 }
 
 .hour-cell {
-    border: 1px solid #e9ecef;
-    min-height: 80px;
+    border: 1px solid var(--color-border);
+    min-height: 96px;
     position: relative;
+    overflow: visible;
+    transition: background-color .15s ease;
 }
 
     .hour-cell.drop-hover {
-        background-color: rgba(0, 123, 255, 0.1);
+        background-color: var(--color-primary-light);
+        box-shadow: inset 0 0 0 2px var(--color-primary-border);
     }
 
+    /* Drag destination preview: green when the drop is free, red when it would conflict. */
+    .hour-cell.drop-ok {
+        background-color: var(--color-success-light);
+        box-shadow: inset 0 0 0 2px var(--color-success);
+    }
+
+    .hour-cell.drop-conflict {
+        background-color: var(--color-danger-light);
+        box-shadow: inset 0 0 0 2px var(--color-danger);
+    }
+
+    .hour-cell.drop-invalid {
+        background-color: var(--color-bg);
+        box-shadow: inset 0 0 0 2px var(--color-border-strong);
+        opacity: .6;
+    }
+
+/* Position/size (left/width) is computed per item in Index.cshtml.cs and applied inline,
+   since it depends on how many other items it shares its time slot with - a fixed set of
+   CSS rules keyed only on duration can't express that. */
 .schedule-item {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: calc(100% - 4px);
-    margin: 2px;
-    padding: 6px;
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    top: 2px;
+    bottom: 2px;
+    min-width: 3.5rem;
+    min-height: 2.5rem;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
     overflow: hidden;
     cursor: grab;
-    transition: all 0.2s ease;
+    /* Items that span multiple hours overflow past their own .hour-cell into the
+       next one(s). Without an explicit z-index, that next .hour-cell (a later,
+       equally-positioned sibling) paints its own border on top and cuts a visible
+       line through the item. */
+    z-index: 1;
+    transition: box-shadow .15s ease, opacity .15s ease;
+    /* Let a pointerdown here start a drag immediately instead of the browser
+       treating the gesture as a page scroll/pinch on touch devices. */
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
- 
-    .schedule-item[data-duration="1"] {
-        width: calc(100% - 4px) !important;
-    }
-
-    .schedule-item[data-duration="2"] {
-        width: calc(200% - 4px) !important;
-        grid-column: span 2;
-    }
-
-    .schedule-item[data-duration="3"] {
-        width: calc(300% - 4px) !important;
-        grid-column: span 3;
-    }
-
-    .schedule-item[data-duration="4"] {
-        width: calc(400% - 4px) !important;
-        grid-column: span 4;
-    }
-
     .schedule-item:hover {
-        box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+        box-shadow: var(--shadow-md);
         z-index: 100;
     }
 
     .schedule-item.dragging {
-        opacity: 0.7;
-        cursor: grabbing;
-        z-index: 1000;
+        opacity: .35;
     }
 
-.item-header {
-    font-weight: bold;
-    font-size: 0.8rem;
-    margin-bottom: 4px;
+/* Floating clone that follows the pointer while dragging - the original item stays in
+   place (dimmed via .dragging) so the grid layout doesn't shift mid-drag. */
+.schedule-item-ghost {
+    position: fixed;
+    pointer-events: none;
+    z-index: 2000;
+    opacity: .9;
+    cursor: grabbing;
+    box-shadow: var(--shadow-md);
+    transition: none;
+}
+
+/* Applied to <body> for the duration of a drag so text selection doesn't fire while
+   dragging across the page (touch and mouse alike). */
+.schedule-dragging {
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: grabbing;
+}
+
+    .schedule-item.has-conflict {
+        box-shadow: 0 0 0 2px var(--color-danger), var(--shadow-sm);
+        z-index: 15;
+    }
+
+        .schedule-item.has-conflict:hover {
+            box-shadow: 0 0 0 2px var(--color-danger), var(--shadow-md);
+        }
+
+.item-conflict-badge {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    line-height: 1;
+    color: var(--color-danger);
+    font-size: var(--fs-sm);
+}
+
+/* The type code (P/C/L) is always shown, even when everything else is hidden for narrow items. */
+.item-type-badge {
+    display: inline-block;
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-bold);
+    padding: 0 var(--space-1);
+    border-radius: .2rem;
+    background-color: rgba(0, 0, 0, .08);
+    margin-bottom: var(--space-1);
+}
+
+.item-time {
+    font-weight: var(--fw-medium);
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .item-subject {
-    font-weight: 600;
-    margin-bottom: 3px;
-    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
     overflow: hidden;
-    text-overflow: ellipsis;
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-sm);
+    line-height: 1.2;
+    margin: 2px 0;
 }
+
+    /* Items sharing their slot with others get too little width for the full detail block -
+       show only the badge and a single clamped line of the subject; everything else moves
+       into the title tooltip. */
+    .schedule-item.is-narrow .item-subject {
+        -webkit-line-clamp: 3;
+        margin-top: 0;
+    }
 
 .item-details {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    font-size: 0.75rem;
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
 }
 
     .item-details span {
@@ -123,21 +198,257 @@
     }
 
 .type-L {
-    background-color: #d1ecf1;
-    border-left: 3px solid #0dcaf0;
+    background-color: var(--color-info-light);
+    border-left: 4px solid var(--color-info);
 }
 
 .type-P {
-    background-color: #fff3cd;
-    border-left: 3px solid #ffc107;
+    background-color: var(--color-warning-light);
+    border-left: 4px solid var(--color-warning);
 }
 
 .type-C {
-    background-color: #d4edda;
-    border-left: 3px solid #198754;
+    background-color: var(--color-success-light);
+    border-left: 4px solid var(--color-success);
 }
 
 .type-X {
-    background-color: #f8f9fa;
-    border-left: 3px solid #6c757d;
+    background-color: var(--color-bg);
+    border-left: 4px solid var(--color-text-muted);
+}
+
+/* ---- Statistics panel: plain numbers computed from the current schedule, no charts ---- */
+
+.schedule-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface);
+    min-width: 8rem;
+}
+
+.stat-value {
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-semibold);
+}
+
+.stat-label {
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+}
+
+/* ---- Legend + conflict summary, shown above both the grid and the day-list view ---- */
+
+.schedule-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+}
+
+.schedule-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+}
+
+.legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+.legend-swatch {
+    display: inline-block;
+    width: .85rem;
+    height: .85rem;
+    border-radius: .2rem;
+}
+
+.conflict-summary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--color-danger);
+    background-color: var(--color-danger-light);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+}
+
+/* ---- Empty state (shown instead of the grid/list when there's no schedule data) ---- */
+
+.schedule-empty-state {
+    padding: var(--space-4) var(--space-4);
+    text-align: center;
+    color: var(--color-text-muted);
+    border: 1px dashed var(--color-border-strong);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface);
+}
+
+    .schedule-empty-state p {
+        margin-bottom: var(--space-3);
+    }
+
+/* ==========================================================================
+   Day-list view (< 900px) - a 5-day, 14-column grid is unusable on a phone.
+   ========================================================================== */
+
+.schedule-day-list {
+    display: none;
+}
+
+/* Read-only agenda preview on the Generate Schedule page - reuses the day-list-* item
+   styling above, but (unlike .schedule-day-list) is visible at every width since this page
+   has no separate grid view to fall back from. */
+.generate-preview-list {
+    display: block;
+}
+
+.day-list-section {
+    margin-bottom: var(--space-4);
+}
+
+.day-list-heading {
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-semibold);
+    padding-bottom: var(--space-1);
+    border-bottom: 2px solid var(--color-border);
+    margin-bottom: var(--space-2);
+}
+
+.day-list-empty {
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+}
+
+.day-list-item {
+    position: relative;
+    display: flex;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--space-2);
+    cursor: pointer;
+}
+
+    .day-list-item.has-conflict {
+        box-shadow: 0 0 0 2px var(--color-danger), var(--shadow-sm);
+    }
+
+.day-list-item-time {
+    flex: 0 0 auto;
+    width: 5.5rem;
+    font-weight: var(--fw-medium);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+}
+
+.day-list-item-body {
+    min-width: 0;
+}
+
+.day-list-item-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--fs-base);
+}
+
+.day-list-item-meta {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 899.98px) {
+    .schedule-container {
+        display: none;
+    }
+
+    .schedule-day-list {
+        display: block;
+    }
+}
+
+/* ==========================================================================
+   Print: the grid, sized to fit one landscape A4 page, and nothing else -
+   no toolbar, no legend/stat chrome beyond what explains the grid itself.
+   ========================================================================== */
+
+@media print {
+    @page {
+        size: A4 landscape;
+        margin: 10mm;
+    }
+
+    .schedule-actions,
+    .conflict-summary {
+        display: none !important;
+    }
+
+    /* The screen breakpoint above picks the day-list on a narrow viewport; print layout
+       width isn't the same thing as screen width, so force the grid view unconditionally. */
+    .schedule-container {
+        display: block !important;
+        overflow: visible;
+        border: none;
+        box-shadow: none;
+    }
+
+    .schedule-day-list {
+        display: none !important;
+    }
+
+    .schedule-stats {
+        margin-bottom: var(--space-2);
+    }
+
+    .stat-item {
+        box-shadow: none;
+        padding: 2px var(--space-2);
+        min-width: 0;
+    }
+
+    .schedule-grid {
+        font-size: 8px;
+    }
+
+    .header-cell, .day-cell {
+        padding: 2px 4px;
+        position: static; /* sticky positioning is meaningless - and can misbehave - when paginated */
+    }
+
+    .hour-cell {
+        min-height: 46px;
+    }
+
+    .schedule-item {
+        padding: 1px 3px;
+        box-shadow: none;
+        break-inside: avoid;
+    }
+
+    .item-details {
+        display: none; /* professor/classroom would be unreadable at this scale - the tooltip has them */
+    }
 }

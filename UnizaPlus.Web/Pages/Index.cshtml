@@ -1,22 +1,35 @@
-﻿@page
+@page
 @model IndexModel
 @{
-    ViewData["Title"] = "UNIZA Schedule";
+    ViewData["Title"] = Localizer["UNIZA Schedule"];
+    ViewData["Description"] = Localizer["Manage your UNIZA class schedule online: add, edit, and drag-and-drop classes in an interactive weekly view."].Value;
 }
 
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>UNIZA Schedule</h1>
-        <div>
-            <a asp-page="ScheduleEdit" asp-route-id="-1" class="btn btn-success me-2">Add New Item</a>
-            <a asp-page="Index" asp-route-refresh="true" class="btn btn-primary">Refresh Schedule Data</a>
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+        <h1 class="mb-0">@Localizer["UNIZA Schedule"]</h1>
+        <div class="schedule-actions">
+            <a asp-page="ScheduleEdit" asp-route-id="-1" class="btn btn-primary">@Localizer["Add New Item"]</a>
+            <a asp-page="UploadSchedule" class="btn btn-outline-secondary">@Localizer["Upload CSV"]</a>
+            <a asp-page="GenerateSchedule" class="btn btn-outline-secondary">@Localizer["Generate Schedule"]</a>
+            <a asp-page="Index" asp-route-refresh="true" class="btn btn-outline-secondary">@Localizer["Refresh Schedule Data"]</a>
+            <form method="post" asp-page-handler="Reset" class="schedule-actions-form">
+                <button type="submit" class="btn btn-outline-danger">@Localizer["Reset"]</button>
+            </form>
         </div>
     </div>
+
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        <div class="alert alert-success">
+            @Model.SuccessMessage
+        </div>
+    }
 
     @if (Model.IsScrapingInProgress)
     {
         <div class="alert alert-info">
-            Refreshing schedule data. This may take several minutes...
+            @Localizer["Refreshing schedule data. This may take several minutes..."]
         </div>
     }
     else if (!string.IsNullOrEmpty(Model.ErrorMessage))
@@ -26,151 +39,213 @@
         </div>
     }
 
-    <div class="schedule-container">
-        <div class="schedule-grid">
-            <div class="header-cell"></div>
-            @for (int hour = 7; hour <= 20; hour++)
-            {
-                <div class="header-cell">@hour:00</div>
-            }
+    @if (Model.NoScheduleData)
+    {
+        <div class="schedule-empty-state">
+            <p>@Localizer["Your schedule is empty."]</p>
+            <p class="mb-0">
+                @Html.Raw(Localizer["Use <strong>Add New Item</strong> to create entries by hand, <strong>Upload CSV</strong> to load a schedule from a file, or <strong>Reset</strong> to load the sample schedule."])
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="schedule-stats">
+            <div class="stat-item">
+                <span class="stat-value">@Model.Stats.TotalHours h</span>
+                <span class="stat-label">@Localizer["hours / week"]</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">@Model.Stats.LectureHours / @Model.Stats.ExerciseHours / @Model.Stats.LabHours h</span>
+                <span class="stat-label">@Localizer["P / C / L"]</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">@Model.Stats.TotalGapHours h</span>
+                <span class="stat-label">@Localizer["gaps between classes"]</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">@(Model.Stats.EarliestStartHour is { } earliest ? $"{earliest}:00" : "-")</span>
+                <span class="stat-label">@Localizer["earliest start"]</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">@(Model.Stats.LatestEndHour is { } latest ? $"{latest}:00" : "-")</span>
+                <span class="stat-label">@Localizer["latest end"]</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">@Model.Stats.FreeDays.Count</span>
+                <span class="stat-label">
+                    @Localizer["free days"]
+                    @if (Model.Stats.FreeDays.Count > 0)
+                    {
+                        <text>(@string.Join(", ", Model.Stats.FreeDays.Select(d => Localizer[d].Value)))</text>
+                    }
+                </span>
+            </div>
+        </div>
 
+        <div class="schedule-meta">
+            <div class="schedule-legend">
+                <span class="legend-item"><span class="legend-swatch type-P" aria-hidden="true"></span>@Localizer["Lecture (P)"]</span>
+                <span class="legend-item"><span class="legend-swatch type-C" aria-hidden="true"></span>@Localizer["Exercise (C)"]</span>
+                <span class="legend-item"><span class="legend-swatch type-L" aria-hidden="true"></span>@Localizer["Lab (L)"]</span>
+            </div>
+            <div id="conflictSummary" class="conflict-summary" style="display:@(Model.ConflictingItemIds.Count > 0 ? "inline-flex" : "none")">
+                <span aria-hidden="true">&#9888;</span>
+                <span id="conflictSummaryText">
+                    @if (Model.ConflictingItemIds.Count > 0)
+                    {
+                        var conflictKey = Model.ConflictingItemIds.Count == 1
+                            ? "{0} conflicting item: drag it to a free slot to resolve"
+                            : "{0} conflicting items: drag one to a free slot to resolve";
+                        @string.Format(Localizer[conflictKey].Value, Model.ConflictingItemIds.Count)
+                    }
+                </span>
+            </div>
+        </div>
+
+        <div class="schedule-container">
+            <div id="scheduleGrid" class="schedule-grid" style="grid-template-columns: 100px repeat(@(Model.GridEndHour - Model.GridStartHour + 1), minmax(80px, 1fr));">
+                <div class="header-cell"></div>
+                @for (int hour = Model.GridStartHour; hour <= Model.GridEndHour; hour++)
+                {
+                    <div class="header-cell">@hour:00</div>
+                }
+
+                @foreach (var day in Model.Days)
+                {
+                    <div class="day-cell">@Localizer[day]</div>
+
+                    @for (int hour = Model.GridStartHour; hour <= Model.GridEndHour; hour++)
+                    {
+                        <div class="hour-cell" data-day="@day" data-hour="@hour">
+                            @{
+                                var items = Model.ScheduleItems.Where(i => i.Day == day && i.StartHour == hour).ToList();
+
+                                foreach (var item in items)
+                                {
+                                    var isConflict = Model.ConflictingItemIds.Contains(item.Id);
+                                    var isNarrow = Model.IsNarrow(item.Id);
+                                    var classes = "schedule-item type-" + item.Type
+                                        + (isConflict ? " has-conflict" : "")
+                                        + (isNarrow ? " is-narrow" : "");
+                                    var endHour = item.StartHour + item.Duration;
+                                    var tooltip = $"{item.Subject} ({IndexModel.GetTypeLabel(item.Type, Localizer)})\n{item.StartHour}:00-{endHour}:00, {item.Classroom}\n{item.Professor}";
+                                    if (isConflict)
+                                    {
+                                        tooltip = Localizer["Conflict: overlaps with another item"] + "\n" + tooltip;
+                                    }
+
+                                    <div class="@classes"
+                                         data-id="@item.Id"
+                                         data-duration="@item.Duration"
+                                         data-day="@day"
+                                         data-hour="@hour"
+                                         style="@Model.GetItemStyle(item.Id, item.Duration)"
+                                         title="@tooltip">
+                                        @if (isConflict)
+                                        {
+                                            <span class="item-conflict-badge" aria-hidden="true">&#9888;</span>
+                                        }
+                                        <span class="item-type-badge">@item.Type</span>
+                                        @if (!isNarrow)
+                                        {
+                                            <div class="item-time">@item.StartHour:00-@endHour:00</div>
+                                        }
+                                        <div class="item-subject">@item.Subject</div>
+                                        @if (!isNarrow)
+                                        {
+                                            <div class="item-details">
+                                                <span>@item.Professor</span>
+                                                <span>@item.Classroom</span>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <div id="scheduleDayList" class="schedule-day-list">
             @foreach (var day in Model.Days)
             {
-                <div class="day-cell">@day</div>
-
-                @for (int hour = 7; hour <= 20; hour++)
-                {
-                    <div class="hour-cell"
-                         data-day="@day"
-                         data-hour="@hour"
-                         ondragover="handleDragOver(e)" 
-                         ondrop="handleDrop(e)"
-                         ondragenter="handleDragEnter(e)"
-                         ondragleave="handleDragLeave(e)">
-
-                        @{
-                            var items = Model.ScheduleItems.Where(i => i.Day == day && i.StartHour == hour).ToList();
-
-                            foreach (var item in items)
+                var dayItems = Model.ScheduleItems.Where(i => i.Day == day).OrderBy(i => i.StartHour).ToList();
+                <section class="day-list-section">
+                    <h2 class="day-list-heading">@Localizer[day]</h2>
+                    <div class="day-list-items" data-day="@day">
+                        @if (dayItems.Count == 0)
+                        {
+                            <p class="day-list-empty">@Localizer["No classes."]</p>
+                        }
+                        else
+                        {
+                            foreach (var item in dayItems)
                             {
-                                <div class="schedule-item type-@item.Type"
-                                     draggable="true"
-                                     data-id="@item.Id"
-                                     data-duration="@item.Duration" 
-                                     data-day="@day"
-                                     data-hour="@hour"
-                                     ondragstart="handleDragStart(event)"
-                                     ondragend="handleDragEnd(event)"
-                                     onclick="viewDetails(@item.Id, event)">
-                                    <div class="item-header">@item.StartHour:00 - @(item.StartHour + item.Duration):00 (ID:@item.Id)</div>
-                                    <div class="item-subject">@item.Subject</div>
-                                    <div class="item-details">
-                                        <span>@item.Type</span>
-                                        <span title="@item.Professor">@(item.Professor.Length > 20 ? item.Professor.Substring(0, 20) + "..." : item.Professor)</span>
-                                        <span>@item.Classroom</span>
+                                var isConflict = Model.ConflictingItemIds.Contains(item.Id);
+                                var endHour = item.StartHour + item.Duration;
+                                <div class="day-list-item type-@item.Type@(isConflict ? " has-conflict" : "")" data-id="@item.Id">
+                                    <div class="day-list-item-time">@item.StartHour:00-@endHour:00</div>
+                                    <div class="day-list-item-body">
+                                        <div class="day-list-item-title">
+                                            <span class="item-type-badge">@item.Type</span>
+                                            <strong>@item.Subject</strong>
+                                            @if (isConflict)
+                                            {
+                                                <span class="item-conflict-badge" aria-hidden="true" title="@Localizer["Conflicts with another item"]">&#9888;</span>
+                                            }
+                                        </div>
+                                        <div class="day-list-item-meta">@item.Classroom &middot; @item.Professor</div>
                                     </div>
                                 </div>
                             }
                         }
                     </div>
-                }
+                </section>
             }
         </div>
-    </div>
+    }
 </div>
 
 @section Scripts {
+    @{
+        var scheduleItemsJson = System.Text.Json.JsonSerializer.Serialize(Model.ScheduleItems.Select(i => new
+        {
+            id = i.Id,
+            day = i.Day,
+            startHour = i.StartHour,
+            duration = i.Duration,
+            type = i.Type,
+            subject = i.Subject,
+            professor = i.Professor,
+            classroom = i.Classroom,
+        }));
+        var typeLabelsJson = System.Text.Json.JsonSerializer.Serialize(new
+        {
+            P = Localizer["Lecture"].Value,
+            C = Localizer["Exercise"].Value,
+            L = Localizer["Lab"].Value,
+        });
+    }
     <script>
-        let draggedItemId = null;
-        let draggedItemDuration = 1;
-
-        function handleDragStart(evt) {
-            const item = evt.target.closest('.schedule-item');
-            if (!item) return;
-            
-            draggedItemId = item.dataset.id;
-            draggedItemDuration = parseInt(item.dataset.duration);
-            
-            item.classList.add('dragging');
-            
-            evt.dataTransfer.effectAllowed = "move";
-            evt.dataTransfer.setData("application/json", JSON.stringify({
-                id: draggedItemId,
-                duration: draggedItemDuration
-            }));
-        }
-
-        function handleDragOver(evt) {
-            evt.preventDefault();
-            evt.dataTransfer.dropEffect = "move";
-        }
-
-        function handleDragEnter(evt) {
-            evt.preventDefault();
-            evt.currentTarget.classList.add('drop-hover');
-        }
-
-        function handleDragLeave(evt) {
-            evt.currentTarget.classList.remove('drop-hover');
-        }
-
-        function handleDragEnd(evt) {
-            evt.target.classList.remove('dragging');
-            document.querySelectorAll('.hour-cell').forEach(cell => {
-                cell.classList.remove('drop-hover');
-            });
-        }
-        
-        function viewDetails(id, evt) {
-            if (evt) {
-                evt.stopPropagation();
-            }
-            window.location.href = `/ScheduleDetail/${id}`;
-        }
-
-        async function handleDrop(evt) {
-            evt.preventDefault();
-            
-            document.querySelectorAll('.hour-cell').forEach(cell => {
-                cell.classList.remove('drop-hover');
-            });
-
-            const targetCell = evt.currentTarget;
-            const day = targetCell.dataset.day;
-            const hour = parseInt(targetCell.dataset.hour);
-            
-            if (!draggedItemId) return;
-
-            try {
-                const itemId = parseInt(draggedItemId);
-                
-                if (isNaN(itemId) || itemId <= 0) {
-                    alert("Cannot move item: invalid item identifier");
-                    return;
-                }
-
-                const response = await fetch('/api/schedule/move', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        id: itemId,
-                        day: day,
-                        startHour: hour
-                    })
-                });
-
-                if (response.ok) {
-                    window.location.reload();
-                } else {
-                    const errorText = await response.text();
-                    alert(`Failed to move item: ${errorText}`);
-                }
-            } catch (error) {
-                alert('An error occurred when trying to move the item.');
-            } finally {
-                draggedItemId = null;
-                draggedItemDuration = 1;
-            }
-        }
+        window.scheduleData = {
+            items: @Html.Raw(scheduleItemsJson),
+            days: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Days)),
+            typeLabels: @Html.Raw(typeLabelsJson),
+            minHour: 7,
+            maxHour: 20,
+            text: {
+                invalidItem: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Cannot move item: invalid item identifier"].Value)),
+                moveFailed: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Failed to move item: {0}"].Value)),
+                moveError: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["An error occurred when trying to move the item."].Value)),
+                conflictSingular: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["{0} conflicting item: drag it to a free slot to resolve"].Value)),
+                conflictPlural: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["{0} conflicting items: drag one to a free slot to resolve"].Value)),
+                conflictTooltipPrefix: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Conflict: overlaps with another item"].Value)),
+                conflictBadgeTitle: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Conflicts with another item"].Value)),
+                noClasses: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["No classes."].Value)),
+            },
+        };
     </script>
+    <script src="~/js/schedule.js" asp-append-version="true"></script>
 }

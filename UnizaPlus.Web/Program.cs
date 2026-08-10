@@ -1,17 +1,40 @@
 using UnizaPlus.Web.Services;
+using UnizaPlus.Web.Services.Scheduling;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();
 
-//pomoc AI
-builder.Services.AddScoped<ScheduleService>(provider => {
-    var logger = provider.GetRequiredService<ILogger<ScheduleService>>();
-    return new ScheduleService(logger); 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddMemoryCache();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.IsEssential = true;
+    options.Cookie.HttpOnly = true;
 });
 
-builder.Services.AddScoped<ScraperService>();
+builder.Services.AddSingleton<SessionScheduleStore>();
+builder.Services.AddScoped<CsvScheduleProvider>();
+
+// UnizaPlus:DataSource selects the schedule source: "Csv" (default, no external
+// dependencies) or "Live" (scrapes vzdelavanie.uniza.sk via the UnizaPlusBackEnd
+// Selenium process). In Csv mode, SeleniumScheduleProvider is never registered,
+// so it can never be instantiated.
+var dataSource = builder.Configuration["UnizaPlus:DataSource"] ?? "Csv";
+if (string.Equals(dataSource, "Live", StringComparison.OrdinalIgnoreCase))
+{
+    builder.Services.AddScoped<SeleniumScheduleProvider>();
+    builder.Services.AddScoped<IScheduleProvider>(sp => sp.GetRequiredService<SeleniumScheduleProvider>());
+}
+else
+{
+    builder.Services.AddScoped<IScheduleProvider>(sp => sp.GetRequiredService<CsvScheduleProvider>());
+}
+
+builder.Services.AddScoped<ScheduleService>();
 
 var app = builder.Build();
 
@@ -24,23 +47,9 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseSession();
 
 app.MapRazorPages();
 app.MapControllers();
-
-//pomoc AI
-using (var scope = app.Services.CreateScope())
-{
-    var scraperService = scope.ServiceProvider.GetRequiredService<ScraperService>();
-    var scheduleService = scope.ServiceProvider.GetRequiredService<ScheduleService>();
-    
-    string solutionDir = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\"));
-    string filePath = Path.Combine(solutionDir, "schedule.csv");
-    
-    if (!System.IO.File.Exists(filePath))
-    {
-        await scraperService.RunAutoScraperAsync();
-    }
-}
 
 app.Run();

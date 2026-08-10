@@ -1,0 +1,119 @@
+@page
+@model GenerateScheduleModel
+@{
+    ViewData["Title"] = Localizer["Generate Schedule"];
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">@Localizer["Generate Schedule"]</h1>
+
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        <div class="alert alert-success">@Model.SuccessMessage</div>
+    }
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">@Localizer["Preferences"]</h5>
+            <p class="form-text">@Localizer["Optional - used only to rank equally good schedules against each other, never to rule one out."]</p>
+            <form method="post" asp-page-handler="Generate">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" asp-for="NoEarlyMornings" id="pref-early" />
+                    <label class="form-check-label" for="pref-early">@Localizer["No classes before 9:00"]</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" asp-for="MinimizeGaps" id="pref-gaps" />
+                    <label class="form-check-label" for="pref-gaps">@Localizer["Minimise gaps between classes"]</label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" asp-for="FreeFriday" id="pref-friday" />
+                    <label class="form-check-label" for="pref-friday">@Localizer["Keep Friday free"]</label>
+                </div>
+
+                @if (Model.HasBlocks)
+                {
+                    <button type="submit" class="btn btn-primary">@Localizer["Generate Schedule"]</button>
+                    <span class="form-text ms-2">@string.Format(Localizer["{0} alternative group(s) found."].Value, Model.BlockCount)</span>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary" disabled>@Localizer["Generate Schedule"]</button>
+                    <div class="form-text mt-2">@Localizer["Your current schedule has no alternative groups (rows sharing the same subject and type but different group) to choose between - there is nothing to generate."]</div>
+                }
+            </form>
+        </div>
+    </div>
+
+    @if (Model.HasGenerated)
+    {
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                    <h5 class="card-title mb-0">
+                        @string.Format(Localizer["Variant {0} of {1}"].Value, Model.VariantIndex + 1, Model.VariantCount)
+                    </h5>
+                    <div class="schedule-actions">
+                        <form method="post" asp-page-handler="Previous" class="d-inline">
+                            <button type="submit" class="btn btn-outline-secondary" @(Model.VariantCount <= 1 ? "disabled" : "")>@Localizer["Previous"]</button>
+                        </form>
+                        <form method="post" asp-page-handler="Next" class="d-inline">
+                            <button type="submit" class="btn btn-outline-secondary" @(Model.VariantCount <= 1 ? "disabled" : "")>@Localizer["Next"]</button>
+                        </form>
+                    </div>
+                </div>
+
+                @if (Model.IsConflictFree)
+                {
+                    <div class="alert alert-success">@Localizer["This variant has no time conflicts."]</div>
+                }
+                else
+                {
+                    <div class="alert alert-warning">
+                        @string.Format(Localizer["No fully conflict-free combination exists. This is the best variant found, with {0} remaining conflict(s)."].Value, Model.ConflictCount)
+                    </div>
+                }
+
+                <div class="generate-preview-list">
+                    @foreach (var day in Model.Days)
+                    {
+                        var dayItems = Model.PreviewItems.Where(i => i.Day == day).OrderBy(i => i.StartHour).ToList();
+                        <section class="day-list-section">
+                            <h2 class="day-list-heading">@Localizer[day]</h2>
+                            @if (dayItems.Count == 0)
+                            {
+                                <p class="day-list-empty">@Localizer["No classes."]</p>
+                            }
+                            else
+                            {
+                                foreach (var item in dayItems)
+                                {
+                                    var endHour = item.StartHour + item.Duration;
+                                    <div class="day-list-item type-@item.Type">
+                                        <div class="day-list-item-time">@item.StartHour:00-@endHour:00</div>
+                                        <div class="day-list-item-body">
+                                            <div class="day-list-item-title">
+                                                <span class="item-type-badge">@item.Type</span>
+                                                <strong>@item.Subject</strong>
+                                            </div>
+                                            <div class="day-list-item-meta">@item.Classroom &middot; @item.Professor</div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </section>
+                    }
+                </div>
+
+                <div class="mt-4">
+                    <form method="post" asp-page-handler="Confirm" class="d-inline">
+                        <button type="submit" class="btn btn-primary">@Localizer["Use this schedule"]</button>
+                    </form>
+                    <form method="post" asp-page-handler="Discard" class="d-inline">
+                        <button type="submit" class="btn btn-outline-danger">@Localizer["Discard"]</button>
+                    </form>
+                    <a asp-page="Index" class="btn btn-secondary">@Localizer["Back to Schedule"]</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

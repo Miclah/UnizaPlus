@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using UnizaPlusBackEnd.Models;
+using Microsoft.Extensions.Localization;
+using UnizaPlus.Models;
 using UnizaPlus.Web.Services;
+using UnizaPlus.Web.Services.Scheduling;
 
-//pomoc s AI
 namespace UnizaPlus.Web.Controllers
 {
     [Route("api/[controller]")]
@@ -11,11 +12,13 @@ namespace UnizaPlus.Web.Controllers
     {
         private readonly ScheduleService _scheduleService;
         private readonly ILogger<ScheduleController> _logger;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public ScheduleController(ScheduleService scheduleService, ILogger<ScheduleController> logger)
+        public ScheduleController(ScheduleService scheduleService, ILogger<ScheduleController> logger, IStringLocalizer<SharedResource> localizer)
         {
             _scheduleService = scheduleService;
             _logger = logger;
+            _localizer = localizer;
         }
 
         public class MoveScheduleItemRequest
@@ -25,7 +28,6 @@ namespace UnizaPlus.Web.Controllers
             public int StartHour { get; set; }
         }
 
-        // pomoc s AI
         [HttpPost("move")]
         public async Task<IActionResult> MoveScheduleItem([FromBody] MoveScheduleItemRequest request)
         {
@@ -36,26 +38,28 @@ namespace UnizaPlus.Web.Controllers
                 if (request.Id <= 0)
                 {
                     _logger.LogWarning($"Invalid item ID received: {request.Id}");
-                    return BadRequest("Invalid item ID");
+                    return BadRequest(_localizer["Invalid item ID"].Value);
+                }
+
+                if (!ScheduleDays.All.Contains(request.Day))
+                {
+                    _logger.LogWarning($"Invalid day received: {request.Day}");
+                    return BadRequest(_localizer["Invalid day"].Value);
                 }
 
                 var item = await _scheduleService.GetScheduleItemAsync(request.Id);
                 if (item == null)
                 {
                     _logger.LogWarning($"Schedule item {request.Id} not found");
-                    return NotFound("Schedule item not found");
+                    return NotFound(_localizer["Schedule item not found"].Value);
                 }
 
-                bool slotAvailable = await _scheduleService.IsTimeSlotAvailableAsync(
-                    request.Day,
-                    request.StartHour,
-                    item.Duration,
-                    item.Id);
-
-                if (!slotAvailable)
+                // Unlike the add/edit form, dragging is allowed to create a conflict - the grid
+                // just highlights it - so this only rejects a drop outside the rendered hour range.
+                if (!ScheduleOverlapChecker.IsWithinBoundaries(request.StartHour, item.Duration))
                 {
-                    _logger.LogWarning($"Time slot conflict detected for item {request.Id}");
-                    return BadRequest("This time slot is already occupied or overlaps with another item");
+                    _logger.LogWarning($"Out-of-range start hour received for item {request.Id}: {request.StartHour}");
+                    return BadRequest(_localizer["Start time must be between 7:00 and 20:00."].Value);
                 }
 
                 var originalDay = item.Day;
@@ -73,7 +77,7 @@ namespace UnizaPlus.Web.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Error processing move request for item {request.Id}");
-                return StatusCode(500, "An error occurred while processing your request");
+                return StatusCode(500, _localizer["An error occurred while processing your request"].Value);
             }
         }
     }

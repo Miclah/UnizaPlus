@@ -2,7 +2,7 @@
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using UnizaPlus.Services;
-using UnizaPlusBackEnd.Models;
+using UnizaPlus.Models;
 using UnizaPlusBackEnd.Services;
 
 namespace UnizaPlusBackEnd
@@ -70,7 +70,6 @@ namespace UnizaPlusBackEnd
                 }
 
                 var options = new ChromeOptions();
-                //options.AddArgument("--headless"); 
 
                 using (var driver = new ChromeDriver(options))
                 {
