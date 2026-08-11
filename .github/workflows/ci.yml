@@ -1,0 +1,106 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          # UnizaPlus.Web/UnizaPlus.Models/UnizaPlus.Tests/UnizaPlusBackEnd all target
+          # net10.0 (no global.json pins an SDK version).
+          dotnet-version: '10.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore
+        run: dotnet restore UnizaPlus.sln
+
+      - name: Build
+        run: dotnet build UnizaPlus.sln --no-restore -c Release
+
+      - name: Test
+        # Tests tagged Category=RequiresNetwork or Category=Selenium hit the live UNIZA
+        # site or launch a real browser session; they must never run here, since a CI
+        # run can't reach vzdelavanie.uniza.sk or drive Chrome, and the whole build must
+        # not fail because that site happens to be unreachable. Everything in this repo
+        # today is filed under the default (no trait) category and runs in CI; the
+        # filter exists so future Live-mode/scraper tests can opt out by trait instead
+        # of being deleted or left to fail intermittently.
+        run: >
+          dotnet test UnizaPlus.sln --no-build -c Release
+          --filter "Category!=RequiresNetwork&Category!=Selenium"
+          --logger "trx;LogFileName=test-results.trx"
+          --results-directory ./TestResults
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ./TestResults/**/*.trx
+          retention-days: 14
+
+  deploy:
+    name: Deploy to Azure
+    needs: build-and-test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+
+    # id-token: write lets azure/login@v2 request a short-lived OIDC token from
+    # GitHub instead of using a stored client secret. The matching federated
+    # credential on the Azure AD app is scoped to this repo's "production"
+    # environment, so the subject is repo:<owner>/<repo>:environment:production.
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Publish
+        run: dotnet publish UnizaPlus.Web/UnizaPlus.Web.csproj -c Release -o ./publish
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ vars.AZURE_WEBAPP_NAME }}
+          package: ./publish
