@@ -1,0 +1,19 @@
+@page "{code:int}"
+@model StatusCodeModel
+@{
+    var (heading, message) = Model.Code switch
+    {
+        404 => (Localizer["Page not found"].Value, Localizer["The page you are looking for does not exist or has moved."].Value),
+        500 => (Localizer["Server error"].Value, Localizer["Something went wrong on our end. Please try again later."].Value),
+        _ => (Localizer["Something went wrong"].Value, Localizer["An unexpected error occurred while handling your request."].Value)
+    };
+    ViewData["Title"] = heading;
+}
+
+<div class="container mt-4">
+    <h1 class="text-danger">@heading</h1>
+    <p>@message</p>
+    <p>
+        <a asp-page="/Index" class="btn btn-primary">@Localizer["Back to Schedule"]</a>
+    </p>
+</div>
