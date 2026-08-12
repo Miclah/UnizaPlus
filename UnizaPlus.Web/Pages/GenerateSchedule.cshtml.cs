@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Localization;
 using UnizaPlus.Models;
 using UnizaPlus.Web.Services;
@@ -14,6 +15,7 @@ namespace UnizaPlus.Web.Pages
     /// previewed live only in this session's ISession (not the main SessionScheduleStore) -
     /// they're a draft the user is browsing, not the active schedule, until Confirm is pressed.
     /// </summary>
+    [EnableRateLimiting("generate")]
     public class GenerateScheduleModel(ScheduleService scheduleService, IStringLocalizer<SharedResource> localizer) : PageModel
     {
         private const string SessionKey = "GenerateSchedule.State";

@@ -75,6 +75,7 @@
   <data name="The file could not be processed: {0}" xml:space="preserve"><value>Súbor sa nepodarilo spracovať: {0}</value></data>
   <data name="Uploaded {0} items. Skipped rows: {1} (reasons are in the application log)." xml:space="preserve"><value>Nahraných {0} položiek. Preskočených riadkov: {1} (dôvody sú v logu aplikácie).</value></data>
   <data name="Uploaded {0} items." xml:space="preserve"><value>Nahraných {0} položiek.</value></data>
+  <data name="The file is too large (max {0} MB)." xml:space="preserve"><value>Súbor je príliš veľký (max {0} MB).</value></data>
 
   <!-- ScheduleCsvParser warnings -->
   <data name="The file is empty." xml:space="preserve"><value>Súbor je prázdny.</value></data>
@@ -84,6 +85,9 @@
   <data name="Row {0}: invalid or missing type '{1}' (expected P, C or L), row skipped." xml:space="preserve"><value>Riadok {0}: neplatný alebo chýbajúci typ '{1}' (očakávané P, C alebo L), riadok preskočený.</value></data>
   <data name="Row {0}: invalid time range Start='{1}' End='{2}', row skipped." xml:space="preserve"><value>Riadok {0}: neplatný časový rozsah Start='{1}' End='{2}', riadok preskočený.</value></data>
   <data name="Row {0}: time range Start={1} End={2} is outside the supported range ({3}-{4}, max duration {5}h), row skipped." xml:space="preserve"><value>Riadok {0}: časový rozsah Start={1} End={2} je mimo podporovaného rozsahu ({3}-{4}, max. trvanie {5}h), riadok preskočený.</value></data>
+  <data name="The file has more than {0} data rows; the rest were ignored." xml:space="preserve"><value>Súbor má viac ako {0} dátových riadkov; zvyšok bol ignorovaný.</value></data>
+  <data name="Row {0}: too many columns, row skipped." xml:space="preserve"><value>Riadok {0}: príliš veľa stĺpcov, riadok preskočený.</value></data>
+  <data name="Row {0}: a field exceeds {1} characters, row skipped." xml:space="preserve"><value>Riadok {0}: pole presahuje {1} znakov, riadok preskočený.</value></data>
 
   <!-- ScheduleController API messages -->
   <data name="Invalid item ID" xml:space="preserve"><value>Neplatné ID položky</value></data>
@@ -91,6 +95,7 @@
   <data name="Schedule item not found" xml:space="preserve"><value>Položka rozvrhu nebola nájdená</value></data>
   <data name="This time slot is already occupied or overlaps with another item" xml:space="preserve"><value>Tento časový slot je už obsadený alebo sa prekrýva s inou položkou</value></data>
   <data name="An error occurred while processing your request" xml:space="preserve"><value>Pri spracovaní požiadavky nastala chyba</value></data>
+  <data name="Invalid or missing anti-forgery token." xml:space="preserve"><value>Neplatný alebo chýbajúci anti-forgery token.</value></data>
 
   <!-- ScheduleEdit page -->
   <data name="Add Schedule Item" xml:space="preserve"><value>Pridať položku rozvrhu</value></data>
@@ -116,6 +121,7 @@
   <data name="Start time must be between 7:00 and 20:00." xml:space="preserve"><value>Čas začiatku musí byť medzi 7:00 a 20:00.</value></data>
   <data name="Invalid type." xml:space="preserve"><value>Neplatný typ.</value></data>
   <data name="This time slot is already occupied or overlaps with another item." xml:space="preserve"><value>Tento časový slot je už obsadený alebo sa prekrýva s inou položkou.</value></data>
+  <data name="Text fields must be at most {0} characters." xml:space="preserve"><value>Textové polia môžu mať najviac {0} znakov.</value></data>
 
   <!-- ScheduleDetail page -->
   <data name="Schedule Item Details" xml:space="preserve"><value>Detaily položky rozvrhu</value></data>

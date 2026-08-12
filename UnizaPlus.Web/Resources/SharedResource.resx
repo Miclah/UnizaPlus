@@ -75,6 +75,7 @@
   <data name="The file could not be processed: {0}" xml:space="preserve"><value>The file could not be processed: {0}</value></data>
   <data name="Uploaded {0} items. Skipped rows: {1} (reasons are in the application log)." xml:space="preserve"><value>Uploaded {0} items. Skipped rows: {1} (reasons are in the application log).</value></data>
   <data name="Uploaded {0} items." xml:space="preserve"><value>Uploaded {0} items.</value></data>
+  <data name="The file is too large (max {0} MB)." xml:space="preserve"><value>The file is too large (max {0} MB).</value></data>
 
   <!-- ScheduleCsvParser warnings -->
   <data name="The file is empty." xml:space="preserve"><value>The file is empty.</value></data>
@@ -84,6 +85,9 @@
   <data name="Row {0}: invalid or missing type '{1}' (expected P, C or L), row skipped." xml:space="preserve"><value>Row {0}: invalid or missing type '{1}' (expected P, C or L), row skipped.</value></data>
   <data name="Row {0}: invalid time range Start='{1}' End='{2}', row skipped." xml:space="preserve"><value>Row {0}: invalid time range Start='{1}' End='{2}', row skipped.</value></data>
   <data name="Row {0}: time range Start={1} End={2} is outside the supported range ({3}-{4}, max duration {5}h), row skipped." xml:space="preserve"><value>Row {0}: time range Start={1} End={2} is outside the supported range ({3}-{4}, max duration {5}h), row skipped.</value></data>
+  <data name="The file has more than {0} data rows; the rest were ignored." xml:space="preserve"><value>The file has more than {0} data rows; the rest were ignored.</value></data>
+  <data name="Row {0}: too many columns, row skipped." xml:space="preserve"><value>Row {0}: too many columns, row skipped.</value></data>
+  <data name="Row {0}: a field exceeds {1} characters, row skipped." xml:space="preserve"><value>Row {0}: a field exceeds {1} characters, row skipped.</value></data>
 
   <!-- ScheduleController API messages -->
   <data name="Invalid item ID" xml:space="preserve"><value>Invalid item ID</value></data>
@@ -91,6 +95,7 @@
   <data name="Schedule item not found" xml:space="preserve"><value>Schedule item not found</value></data>
   <data name="This time slot is already occupied or overlaps with another item" xml:space="preserve"><value>This time slot is already occupied or overlaps with another item</value></data>
   <data name="An error occurred while processing your request" xml:space="preserve"><value>An error occurred while processing your request</value></data>
+  <data name="Invalid or missing anti-forgery token." xml:space="preserve"><value>Invalid or missing anti-forgery token.</value></data>
 
   <!-- ScheduleEdit page -->
   <data name="Add Schedule Item" xml:space="preserve"><value>Add Schedule Item</value></data>
@@ -116,6 +121,7 @@
   <data name="Start time must be between 7:00 and 20:00." xml:space="preserve"><value>Start time must be between 7:00 and 20:00.</value></data>
   <data name="Invalid type." xml:space="preserve"><value>Invalid type.</value></data>
   <data name="This time slot is already occupied or overlaps with another item." xml:space="preserve"><value>This time slot is already occupied or overlaps with another item.</value></data>
+  <data name="Text fields must be at most {0} characters." xml:space="preserve"><value>Text fields must be at most {0} characters.</value></data>
 
   <!-- ScheduleDetail page -->
   <data name="Schedule Item Details" xml:space="preserve"><value>Schedule Item Details</value></data>

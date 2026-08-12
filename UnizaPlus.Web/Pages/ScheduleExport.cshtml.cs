@@ -1,12 +1,14 @@
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Localization;
 using UnizaPlus.Web.Services;
 using UnizaPlus.Web.Services.Scheduling;
 
 namespace UnizaPlus.Web.Pages
 {
+    [EnableRateLimiting("generate")]
     public class ScheduleExportModel(ScheduleService scheduleService, IStringLocalizer<SharedResource> localizer) : PageModel
     {
         private readonly ScheduleService _scheduleService = scheduleService;

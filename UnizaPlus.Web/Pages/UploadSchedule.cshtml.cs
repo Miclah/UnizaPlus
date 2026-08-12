@@ -1,13 +1,20 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Localization;
 using UnizaPlus.Web.Services;
 using UnizaPlus.Web.Services.Scheduling;
 
 namespace UnizaPlus.Web.Pages
 {
+    [RequestSizeLimit(MaxUploadBytes + 1_000_000)] // hard backstop with headroom for multipart overhead over the friendly check below
+    [EnableRateLimiting("upload")]
     public class UploadScheduleModel(ScheduleService scheduleService, IStringLocalizer<SharedResource> localizer) : PageModel
     {
+        // A real timetable CSV is a few KB; this is a generous but deliberate ceiling instead
+        // of relying on Kestrel's implicit default (~28 MB) to be the only limit in effect.
+        private const long MaxUploadBytes = 2_000_000;
+
         private readonly ScheduleService _scheduleService = scheduleService;
         private readonly IStringLocalizer<SharedResource> _localizer = localizer;
 
@@ -26,6 +33,12 @@ namespace UnizaPlus.Web.Pages
             if (file == null || file.Length == 0)
             {
                 ErrorMessage = _localizer["Please select a CSV file."];
+                return RedirectToPage();
+            }
+
+            if (file.Length > MaxUploadBytes)
+            {
+                ErrorMessage = _localizer["The file is too large (max {0} MB).", MaxUploadBytes / 1_000_000];
                 return RedirectToPage();
             }
 

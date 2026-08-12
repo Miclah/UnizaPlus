@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Localization;
 using UnizaPlus.Models;
 using UnizaPlus.Web.Services;
@@ -8,29 +10,45 @@ namespace UnizaPlus.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableRateLimiting("move")]
     public class ScheduleController : ControllerBase
     {
         private readonly ScheduleService _scheduleService;
         private readonly ILogger<ScheduleController> _logger;
         private readonly IStringLocalizer<SharedResource> _localizer;
+        private readonly IAntiforgery _antiforgery;
 
-        public ScheduleController(ScheduleService scheduleService, ILogger<ScheduleController> logger, IStringLocalizer<SharedResource> localizer)
+        public ScheduleController(ScheduleService scheduleService, ILogger<ScheduleController> logger, IStringLocalizer<SharedResource> localizer, IAntiforgery antiforgery)
         {
             _scheduleService = scheduleService;
             _logger = logger;
             _localizer = localizer;
+            _antiforgery = antiforgery;
         }
 
         public class MoveScheduleItemRequest
         {
             public int Id { get; set; }
-            public string Day { get; set; } = string.Empty; 
+            public string Day { get; set; } = string.Empty;
             public int StartHour { get; set; }
         }
 
         [HttpPost("move")]
         public async Task<IActionResult> MoveScheduleItem([FromBody] MoveScheduleItemRequest request)
         {
+            // AddControllers() (unlike AddRazorPages()) doesn't wire up automatic anti-forgery
+            // validation, and this is a JSON body with no HTML form around it - so it's
+            // validated explicitly here instead, against the header Index.cshtml/schedule.js
+            // send (see AddAntiforgery's HeaderName in Program.cs).
+            try
+            {
+                await _antiforgery.ValidateRequestAsync(HttpContext);
+            }
+            catch (AntiforgeryValidationException)
+            {
+                return BadRequest(_localizer["Invalid or missing anti-forgery token."].Value);
+            }
+
             try
             {
                 _logger.LogInformation($"Received move request: ID={request.Id}, Day={request.Day}, Hour={request.StartHour}");

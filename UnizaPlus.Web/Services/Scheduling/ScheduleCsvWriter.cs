@@ -41,6 +41,15 @@ namespace UnizaPlus.Web.Services.Scheduling
                 return string.Empty;
             }
 
+            // CSV/formula injection (CWE-1236): a cell starting with =, +, -, @, tab or CR is
+            // interpreted as a live formula by Excel/Sheets/LibreOffice when this file is
+            // reopened. Prefix it with a quote so it's read back as plain text instead. Values
+            // come from an anonymous CSV upload or the edit form, so this can't be trusted.
+            if ("=+-@\t\r".IndexOf(value[0]) >= 0)
+            {
+                value = "'" + value;
+            }
+
             return value.Contains(',') || value.Contains('"') || value.Contains('\n') || value.Contains('\r')
                 ? $"\"{value.Replace("\"", "\"\"")}\""
                 : value;

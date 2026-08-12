@@ -1,5 +1,7 @@
 using System.Globalization;
+using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.RateLimiting;
 using UnizaPlus.Web.Services;
 using UnizaPlus.Web.Services.Scheduling;
 
@@ -21,6 +23,35 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.IsEssential = true;
     options.Cookie.HttpOnly = true;
+    // Explicit rather than relying on UseHttpsRedirection/UseHsts to make this true as a side
+    // effect: the cookie is safe by construction even if the redirect pipeline ever changes.
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+});
+
+// HeaderName lets ScheduleController validate the token from a JSON POST's headers
+// (Index.cshtml/schedule.js) - the default form-field-only check doesn't apply to an API
+// controller with no HTML form around it. See ScheduleController.MoveScheduleItem.
+builder.Services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+    static string PartitionKey(HttpContext context) => context.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+
+    // Anonymous, unauthenticated endpoints that do real work on an Azure App Service F1
+    // instance (1 GB RAM, no auth in front of anything) - per-IP caps so one script can't
+    // exhaust memory (uploads) or CPU (schedule generation) by looping a single endpoint.
+    // These apply to the whole page (GET included, not just the POST handler - Razor Pages
+    // has no per-handler-method attribute), so the limit has to comfortably fit a real
+    // multi-request session (view page, submit, get redirected back), not just the one POST.
+    options.AddPolicy("upload", context => RateLimitPartition.GetFixedWindowLimiter(
+        PartitionKey(context), _ => new FixedWindowRateLimiterOptions { PermitLimit = 20, Window = TimeSpan.FromMinutes(1) }));
+    options.AddPolicy("generate", context => RateLimitPartition.GetFixedWindowLimiter(
+        PartitionKey(context), _ => new FixedWindowRateLimiterOptions { PermitLimit = 30, Window = TimeSpan.FromMinutes(1) }));
+    options.AddPolicy("move", context => RateLimitPartition.GetFixedWindowLimiter(
+        PartitionKey(context), _ => new FixedWindowRateLimiterOptions { PermitLimit = 60, Window = TimeSpan.FromMinutes(1) }));
 });
 
 builder.Services.AddSingleton<SessionScheduleStore>();
@@ -52,6 +83,17 @@ localizationOptions.RequestCultureProviders = [new CookieRequestCultureProvider(
 
 var app = builder.Build();
 
+// Applied to every response, including error/status pages, before anything can short-circuit
+// the pipeline (e.g. UseStaticFiles). The app has no external script/style/image dependencies -
+// Bootstrap and jQuery are vendored under wwwroot/lib - so a same-origin-only CSP costs nothing.
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
+    context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
+    context.Response.Headers.Append("Content-Security-Policy", "default-src 'self'; base-uri 'self'; frame-ancestors 'self'");
+    await next();
+});
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
@@ -68,6 +110,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRequestLocalization(localizationOptions);
 app.UseRouting();
+app.UseRateLimiter();
 app.UseSession();
 
 // Liveness endpoint for an external cron pinger that keeps the Azure App Service F1 container

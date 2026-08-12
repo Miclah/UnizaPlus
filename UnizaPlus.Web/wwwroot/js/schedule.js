@@ -309,9 +309,13 @@
 
     async function persistMove(id, day, startHour) {
         try {
+            const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
             const response = await fetch("/api/schedule/move", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": tokenInput ? tokenInput.value : "",
+                },
                 body: JSON.stringify({ id: id, day: day, startHour: startHour }),
             });
             if (response.ok) {

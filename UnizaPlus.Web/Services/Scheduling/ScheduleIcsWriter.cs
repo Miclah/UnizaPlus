@@ -141,6 +141,7 @@ namespace UnizaPlus.Web.Services.Scheduling
             .Replace(";", "\\;")
             .Replace(",", "\\,")
             .Replace("\r\n", "\\n")
+            .Replace("\r", "\\n") // lone CR (no matching \n) - only reachable via a hand-built request, not the web form
             .Replace("\n", "\\n");
 
         /// <summary>

@@ -12,6 +12,18 @@ public class SmokeTests(WebApplicationFactory<Program> factory) : IClassFixture<
 {
     private readonly WebApplicationFactory<Program> _factory = factory;
 
+    /// <summary>
+    /// The session cookie is Secure-only (Program.cs AddSession), so the client needs an
+    /// https:// base address for its cookie container to accept and resend it - TestServer's
+    /// in-memory transport ignores the scheme itself, only HttpClient's cookie handling cares.
+    /// </summary>
+    private HttpClient CreateClient(bool allowAutoRedirect = true) =>
+        _factory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            BaseAddress = new Uri("https://localhost"),
+            AllowAutoRedirect = allowAutoRedirect,
+        });
+
     private static (string day, int hour) FindItemPosition(string html, int id)
     {
         var match = Regex.Match(html, $"data-id=\"{id}\"[^>]*data-day=\"([^\"]*)\"[^>]*data-hour=\"(\\d+)\"");
@@ -29,7 +41,7 @@ public class SmokeTests(WebApplicationFactory<Program> factory) : IClassFixture<
     [Fact]
     public async Task HomePage_RendersDemoScheduleFromCsv()
     {
-        using var client = _factory.CreateClient();
+        using var client = CreateClient();
 
         var response = await client.GetAsync("/");
         var html = await response.Content.ReadAsStringAsync();
@@ -42,11 +54,12 @@ public class SmokeTests(WebApplicationFactory<Program> factory) : IClassFixture<
     [Fact]
     public async Task MoveScheduleItem_PersistsWithinTheSameSession()
     {
-        using var client = _factory.CreateClient();
+        using var client = CreateClient();
 
-        // First load establishes the session cookie the move/read below rely on.
+        // First load establishes the session cookie and anti-forgery token the move/read below rely on.
         var before = await client.GetStringAsync("/");
         var originalPosition = FindItemPosition(before, id: 1);
+        client.DefaultRequestHeaders.Add("X-CSRF-TOKEN", ExtractAntiforgeryToken(before));
 
         var moveResponse = await client.PostAsJsonAsync("/api/schedule/move", new
         {
@@ -66,10 +79,11 @@ public class SmokeTests(WebApplicationFactory<Program> factory) : IClassFixture<
     [Fact]
     public async Task MoveScheduleItem_RejectsInvalidDay_AndLeavesItemUnchanged()
     {
-        using var client = _factory.CreateClient();
+        using var client = CreateClient();
 
         var before = await client.GetStringAsync("/");
         var originalPosition = FindItemPosition(before, id: 1);
+        client.DefaultRequestHeaders.Add("X-CSRF-TOKEN", ExtractAntiforgeryToken(before));
 
         var moveResponse = await client.PostAsJsonAsync("/api/schedule/move", new
         {
@@ -87,10 +101,13 @@ public class SmokeTests(WebApplicationFactory<Program> factory) : IClassFixture<
     [Fact]
     public async Task MoveScheduleItem_AllowsMovingIntoAnOccupiedSlot_AndFlagsTheConflict()
     {
-        using var client = _factory.CreateClient();
+        using var client = CreateClient();
 
         // Item 1 in sample-data/schedule.csv occupies Monday 8-10; dragging (unlike the
         // add/edit form) is allowed to land item 3 on top of it - the grid just flags it.
+        var before = await client.GetStringAsync("/"); // establishes session + anti-forgery token
+        client.DefaultRequestHeaders.Add("X-CSRF-TOKEN", ExtractAntiforgeryToken(before));
+
         var moveResponse = await client.PostAsJsonAsync("/api/schedule/move", new
         {
             id = 3,
@@ -108,10 +125,11 @@ public class SmokeTests(WebApplicationFactory<Program> factory) : IClassFixture<
     [Fact]
     public async Task MoveScheduleItem_RejectsDropOutsideTheSupportedHourRange()
     {
-        using var client = _factory.CreateClient();
+        using var client = CreateClient();
 
         var before = await client.GetStringAsync("/");
         var originalPosition = FindItemPosition(before, id: 1);
+        client.DefaultRequestHeaders.Add("X-CSRF-TOKEN", ExtractAntiforgeryToken(before));
 
         // Item 1 has a 2-hour duration; starting it at 20 would run past the grid's 21:00 edge.
         var moveResponse = await client.PostAsJsonAsync("/api/schedule/move", new
@@ -130,7 +148,7 @@ public class SmokeTests(WebApplicationFactory<Program> factory) : IClassFixture<
     [Fact]
     public async Task AddScheduleItem_AppearsOnTheHomePage()
     {
-        using var client = _factory.CreateClient();
+        using var client = CreateClient();
 
         var editPage = await client.GetStringAsync("/ScheduleEdit/-1");
         var token = ExtractAntiforgeryToken(editPage);
@@ -159,7 +177,7 @@ public class SmokeTests(WebApplicationFactory<Program> factory) : IClassFixture<
     [Fact]
     public async Task ExportSchedule_ReturnsCsvOfTheSessionSchedule()
     {
-        using var client = _factory.CreateClient();
+        using var client = CreateClient();
 
         await client.GetStringAsync("/"); // establish session
 
@@ -182,7 +200,7 @@ public class SmokeTests(WebApplicationFactory<Program> factory) : IClassFixture<
     [Fact]
     public async Task EditScheduleItem_RejectsOverlapAndDoesNotSave()
     {
-        using var client = _factory.CreateClient();
+        using var client = CreateClient();
 
         // Item 1 in sample-data/schedule.csv is on its Pondelok (Monday) row, 8-10; the
         // parser normalises that to the English "Monday" - place the new item's slot
@@ -217,7 +235,7 @@ public class SmokeTests(WebApplicationFactory<Program> factory) : IClassFixture<
     [Fact]
     public async Task EditScheduleItem_UnknownId_ReturnsNotFound()
     {
-        using var client = _factory.CreateClient();
+        using var client = CreateClient();
 
         var response = await client.GetAsync("/ScheduleEdit/999999");
 
@@ -227,7 +245,7 @@ public class SmokeTests(WebApplicationFactory<Program> factory) : IClassFixture<
     [Fact]
     public async Task UploadSchedule_HeaderOnlyCsv_SucceedsWithEmptySchedule()
     {
-        using var client = _factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        using var client = CreateClient(allowAutoRedirect: false);
 
         var uploadPage = await client.GetStringAsync("/UploadSchedule");
         var token = ExtractAntiforgeryToken(uploadPage);
@@ -251,7 +269,7 @@ public class SmokeTests(WebApplicationFactory<Program> factory) : IClassFixture<
     [Fact]
     public async Task UploadSchedule_GarbageFile_ShowsErrorAndKeepsPreviousSchedule()
     {
-        using var client = _factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        using var client = CreateClient(allowAutoRedirect: false);
 
         var before = await client.GetStringAsync("/");
         Assert.Contains("data-id=\"1\"", before);

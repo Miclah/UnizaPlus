@@ -8,6 +8,10 @@ namespace UnizaPlus.Web.Pages
 {
     public class ScheduleEditModel(ScheduleService scheduleService, IStringLocalizer<SharedResource> localizer) : PageModel
     {
+        // Matches ScheduleCsvParser.MaxFieldLength, so a value that's rejected here can't be
+        // smuggled in through a CSV upload instead.
+        private const int MaxFieldLength = 200;
+
         private readonly ScheduleService _scheduleService = scheduleService;
         private readonly IStringLocalizer<SharedResource> _localizer = localizer;
 
@@ -59,6 +63,12 @@ namespace UnizaPlus.Web.Pages
             if (string.IsNullOrWhiteSpace(ScheduleItem.Classroom))
             {
                 ModelState.AddModelError(nameof(ScheduleItem.Classroom), _localizer["Classroom is required."]);
+            }
+            if (ScheduleItem.Subject.Length > MaxFieldLength || ScheduleItem.SubjectCode.Length > MaxFieldLength ||
+                ScheduleItem.Professor.Length > MaxFieldLength || ScheduleItem.Classroom.Length > MaxFieldLength ||
+                ScheduleItem.StudentGroups.Length > MaxFieldLength)
+            {
+                ModelState.AddModelError(string.Empty, _localizer["Text fields must be at most {0} characters.", MaxFieldLength]);
             }
             if (!ScheduleDays.All.Contains(ScheduleItem.Day))
             {

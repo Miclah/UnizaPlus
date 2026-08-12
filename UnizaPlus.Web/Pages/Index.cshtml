@@ -228,6 +228,10 @@
             L = Localizer["Lab"].Value,
         });
     }
+    @* Read from the DOM by schedule.js and sent as the X-CSRF-TOKEN header on every
+       /api/schedule/move call - that endpoint is a JSON POST with no <form> around it, so it
+       can't rely on Razor Pages' automatic hidden-input anti-forgery validation on its own. *@
+    @Html.AntiForgeryToken()
     <script>
         window.scheduleData = {
             items: @Html.Raw(scheduleItemsJson),

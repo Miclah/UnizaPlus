@@ -25,6 +25,13 @@ namespace UnizaPlus.Web.Services.Scheduling
         private const int MaxHour = 20;
         private const int MaxDuration = 4;
 
+        // Hard caps so an anonymous upload can't exhaust server memory: a real timetable is a
+        // few dozen rows with short field values, so these are set well above any legitimate
+        // file, not tuned to a "reasonable" schedule size.
+        private const int MaxDataRows = 5000;
+        private const int MaxColumns = 64;
+        private const int MaxFieldLength = 200;
+
         // localizer is optional so existing callers (tests, and any code without a DI scope)
         // keep working unlocalized - the key strings below are themselves the English text.
         public static async Task<ScheduleCsvParseResult> ParseAsync(TextReader reader, IStringLocalizer<SharedResource>? localizer = null)
@@ -67,12 +74,24 @@ namespace UnizaPlus.Web.Services.Scheduling
             {
                 lineNumber++;
 
+                if (lineNumber - 1 > MaxDataRows)
+                {
+                    result.Warnings.Add(Format(localizer, "The file has more than {0} data rows; the rest were ignored.", MaxDataRows));
+                    break;
+                }
+
                 if (string.IsNullOrWhiteSpace(line))
                 {
                     continue;
                 }
 
                 var fields = CsvLineSplitter.Split(line);
+
+                if (fields.Count > MaxColumns)
+                {
+                    result.Warnings.Add(Format(localizer, "Row {0}: too many columns, row skipped.", lineNumber));
+                    continue;
+                }
 
                 string? GetField(string column)
                 {
@@ -125,18 +144,31 @@ namespace UnizaPlus.Web.Services.Scheduling
                     continue;
                 }
 
+                var subjectCode = GetField("SubjectCode") ?? string.Empty;
+                var classroom = GetField("Room") ?? string.Empty;
+                var professor = GetField("Teacher") ?? string.Empty;
+                var studentGroups = GetField("Group") ?? string.Empty;
+
+                if (subject.Length > MaxFieldLength || subjectCode.Length > MaxFieldLength ||
+                    classroom.Length > MaxFieldLength || professor.Length > MaxFieldLength ||
+                    studentGroups.Length > MaxFieldLength)
+                {
+                    result.Warnings.Add(Format(localizer, "Row {0}: a field exceeds {1} characters, row skipped.", lineNumber, MaxFieldLength));
+                    continue;
+                }
+
                 var item = new ScheduleItem
                 {
                     Id = nextId++,
                     Subject = subject,
-                    SubjectCode = GetField("SubjectCode") ?? string.Empty,
+                    SubjectCode = subjectCode,
                     Type = typeRaw.ToUpperInvariant(),
                     Day = day,
                     StartHour = start,
                     Duration = duration,
-                    Classroom = GetField("Room") ?? string.Empty,
-                    Professor = GetField("Teacher") ?? string.Empty,
-                    StudentGroups = GetField("Group") ?? string.Empty,
+                    Classroom = classroom,
+                    Professor = professor,
+                    StudentGroups = studentGroups,
                 };
                 item.InitializeColor();
                 result.Items.Add(item);
