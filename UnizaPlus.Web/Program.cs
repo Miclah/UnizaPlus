@@ -70,6 +70,23 @@ app.UseRequestLocalization(localizationOptions);
 app.UseRouting();
 app.UseSession();
 
+// Liveness endpoint for an external cron pinger that keeps the Azure App Service F1 container
+// warm (F1 has no Always On, so it sleeps after idling and the next visitor would otherwise eat
+// the cold start). Deliberately trivial: no CSV read, no session, no auth, nothing about the
+// environment/version in the body - just a bare 200. Map* calls don't control middleware order -
+// ASP.NET Core dispatches endpoints after every app.Use* above regardless of where MapGet is
+// written in this file - so this route still passes through UseHttpsRedirection, UseStaticFiles,
+// UseRequestLocalization, UseRouting and UseSession. That's fine: none of them touch the response
+// for a 200 (UseStatusCodePagesWithReExecute only reacts to 4xx/5xx), localization only reads a
+// cookie, and UseSession is lazy and never triggered since the handler doesn't touch HttpContext.
+// Session. Point the cron job at the https:// URL directly, though - UseHttpsRedirection still
+// applies here, and an http:// ping would pay for a redirect round trip on every single check.
+// There's no request-logging middleware in this app today (Microsoft.AspNetCore is already
+// capped at Warning in appsettings.json, so ASP.NET Core's own per-request "Request
+// starting/finished" logs are already off for every route); if HTTP logging or App Insights is
+// added later, exclude this path there too.
+app.MapGet("/health", () => Results.Ok());
+
 // Sets the UI language cookie and redirects back. A GET endpoint (rather than a form POST)
 // keeps the language switcher a plain link in the header; it only ever changes a display
 // preference cookie, so it carries none of the risk a CSRF-protected state change would.
