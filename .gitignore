@@ -398,3 +398,7 @@ FodyWeavers.xsd
 *.sln.iml
 
 AUDIT.md
+
+# Local Docker Compose overrides (copied from .env.example, may hold
+# machine-specific or eventually secret values - never commit this).
+.env

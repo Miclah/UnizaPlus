@@ -1,0 +1,27 @@
+# Build output
+**/bin/
+**/obj/
+
+# IDE / editor
+**/.vs/
+**/.vscode/
+*.user
+*.suo
+
+# Source control / docs
+.git/
+.gitignore
+.github/
+*.md
+LICENSE
+*.pdf
+
+# Not part of the image: the Selenium scraper and its test project
+UnizaPlusBackEnd/
+UnizaPlus.Tests/
+
+# Docker files themselves don't need to be in the build context copy
+Dockerfile
+docker-compose.yml
+.dockerignore
+.env
