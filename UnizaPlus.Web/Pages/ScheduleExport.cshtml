@@ -49,7 +49,7 @@
 </div>
 
 @section Scripts {
-    <script>
+    <script nonce="@HttpContext.Items["csp-nonce"]">
         (function () {
             const icsRadio = document.getElementById("format-ics");
             const csvRadio = document.getElementById("format-csv");

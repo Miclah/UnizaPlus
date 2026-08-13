@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Security.Cryptography;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.RateLimiting;
@@ -86,11 +87,20 @@ var app = builder.Build();
 // Applied to every response, including error/status pages, before anything can short-circuit
 // the pipeline (e.g. UseStaticFiles). The app has no external script/style/image dependencies -
 // Bootstrap and jQuery are vendored under wwwroot/lib - so a same-origin-only CSP costs nothing.
+//
+// style-src needs 'unsafe-inline': the schedule grid positions every item with a per-item,
+// server- and client-computed `style="left:...;width:..."` attribute (see GetItemStyle /
+// getItemStyle) - there's no fixed set of values a nonce or hash could pin down. script-src
+// instead gets a fresh per-request nonce, since the handful of inline <script> blocks (the
+// scheduleData bootstrap in Index.cshtml, the export-page toggle) are fixed and can carry it.
 app.Use(async (context, next) =>
 {
+    var nonce = Convert.ToBase64String(RandomNumberGenerator.GetBytes(16));
+    context.Items["csp-nonce"] = nonce;
     context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
     context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
-    context.Response.Headers.Append("Content-Security-Policy", "default-src 'self'; base-uri 'self'; frame-ancestors 'self'");
+    context.Response.Headers.Append("Content-Security-Policy",
+        $"default-src 'self'; base-uri 'self'; frame-ancestors 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'nonce-{nonce}'");
     await next();
 });
 
