@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1760 1260" width="1760" height="1260" role="img" aria-labelledby="ttl desc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+<title id="ttl">UnizaPlus architecture</title>
+<desc id="desc">Vertical flow: Browser to UnizaPlus.Web (Razor Pages and ScheduleController, ScheduleService, SessionScheduleStore), then once per session to the IScheduleProvider abstraction, which is implemented either by CsvScheduleProvider reading sample-data/schedule.csv (the default, active path) or by SeleniumScheduleProvider driving the separate UnizaPlusBackEnd process against vzdelavanie.uniza.sk. Exactly one implementation is registered in DI at startup.</desc>
+<defs>
+<marker id="ai" viewBox="0 0 10 10" refX="9.2" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#3A3F47"></path></marker>
+<marker id="aa" viewBox="0 0 10 10" refX="9.2" refY="5" markerWidth="6.6" markerHeight="6.6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#1F5FBF"></path></marker>
+<marker id="ao" viewBox="0 0 10 10" refX="9.2" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#B3B8C0"></path></marker>
+</defs>
+
+<rect x="0" y="0" width="1760" height="1260" fill="#FBFAF7"></rect>
+
+<rect x="150" y="176" width="844" height="524" rx="12" fill="#F2F1EC" stroke="#C4C8CF" stroke-width="1.6"></rect>
+<rect x="890" y="1014" width="460" height="198" rx="12" fill="none" stroke="#B3B8C0" stroke-width="1.8" stroke-dasharray="10 7"></rect>
+
+<g fill="none" stroke="#C4C8CF" stroke-width="1.5">
+<path d="M994 602 H1020" stroke-dasharray="2 7"></path>
+<path d="M1400 602 H1720 V1074 H1336" stroke-dasharray="2 7"></path>
+<path d="M710 481 H860 V411 H1020"></path>
+<path d="M1330 957 H1488"></path>
+</g>
+
+<rect x="150" y="20" width="844" height="84" rx="10" fill="#FFFFFF" stroke="#C4C8CF" stroke-width="1.8"></rect>
+<text x="174" y="58" font-size="27" font-weight="600" fill="#15171B">Browser</text>
+<text x="174" y="88" font-size="19" fill="#585E67">weekly grid &#183; drag-and-drop on Pointer Events &#183; optimistic re-render &#183; undo/redo</text>
+
+<path d="M460 104 V244" fill="none" stroke="#3A3F47" stroke-width="2.4" marker-end="url(#ai)"></path>
+<path d="M835 104 V244" fill="none" stroke="#3A3F47" stroke-width="2.4" marker-end="url(#ai)"></path>
+<text x="446" y="150" font-size="19" fill="#585E67" text-anchor="end">page requests</text>
+<text x="819" y="150" font-size="18" fill="#585E67" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">POST /api/schedule/move</text>
+
+<text x="174" y="212" font-size="22" font-weight="600" fill="#15171B">UnizaPlus.Web</text>
+<text x="174" y="236" font-size="18" fill="#585E67">ASP.NET Core &#183; .NET 10</text>
+
+<rect x="240" y="250" width="440" height="144" rx="10" fill="#FFFFFF" stroke="#C4C8CF" stroke-width="1.8"></rect>
+<text x="264" y="288" font-size="22" font-weight="600" fill="#15171B">Razor Pages</text>
+<g font-size="19" fill="#585E67">
+<text x="264" y="320">Index &#183; ScheduleEdit &#183; ScheduleDetail</text>
+<text x="264" y="346">UploadSchedule &#183; GenerateSchedule</text>
+<text x="264" y="372">ScheduleExport</text>
+</g>
+
+<rect x="700" y="250" width="270" height="144" rx="10" fill="#FFFFFF" stroke="#C4C8CF" stroke-width="1.8"></rect>
+<text x="720" y="288" font-size="22" font-weight="600" fill="#15171B">ScheduleController</text>
+<text x="720" y="320" font-size="19" fill="#585E67">POST</text>
+<text x="720" y="346" font-size="18" fill="#585E67" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">/api/schedule/move</text>
+
+<path d="M460 394 V434" fill="none" stroke="#3A3F47" stroke-width="2.4" marker-end="url(#ai)"></path>
+<path d="M835 394 V406 H620 V434" fill="none" stroke="#3A3F47" stroke-width="2.4" marker-end="url(#ai)"></path>
+
+<rect x="250" y="440" width="460" height="82" rx="10" fill="#FFFFFF" stroke="#C4C8CF" stroke-width="1.8"></rect>
+<text x="274" y="476" font-size="24" font-weight="600" fill="#15171B">ScheduleService</text>
+<text x="274" y="506" font-size="19" fill="#585E67">per-request facade over the current session</text>
+
+<path d="M480 522 V556" fill="none" stroke="#3A3F47" stroke-width="2.4" marker-end="url(#ai)"></path>
+
+<rect x="210" y="562" width="540" height="114" rx="10" fill="#FFFFFF" stroke="#C4C8CF" stroke-width="1.8"></rect>
+<text x="234" y="598" font-size="24" font-weight="600" fill="#15171B">SessionScheduleStore</text>
+<g font-size="19" fill="#585E67">
+<text x="234" y="628">IMemoryCache &#183; one List&lt;ScheduleItem&gt; per session ID</text>
+<text x="234" y="654">30-minute sliding expiry</text>
+</g>
+
+<rect x="1020" y="320" width="640" height="182" rx="10" fill="#FFFFFF" stroke="#C4C8CF" stroke-width="1.8"></rect>
+<text x="1044" y="356" font-size="21" font-weight="600" fill="#15171B">Pure logic, no ASP.NET dependency</text>
+<g font-size="18" fill="#585E67" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+<text x="1044" y="394">ScheduleGenerator</text>
+<text x="1044" y="422">ScheduleOverlapChecker</text>
+<text x="1044" y="450">ScheduleGridLayout</text>
+<text x="1044" y="478">ScheduleStatisticsCalculator</text>
+<text x="1372" y="394">ScheduleCsvParser</text>
+<text x="1372" y="422">ScheduleCsvWriter</text>
+<text x="1372" y="450">ScheduleIcsWriter</text>
+</g>
+
+<rect x="1020" y="560" width="380" height="84" rx="10" fill="#FFFFFF" stroke="#C4C8CF" stroke-width="1.8"></rect>
+<text x="1044" y="596" font-size="21" font-weight="600" fill="#15171B">UnizaPlus.Models</text>
+<text x="1044" y="624" font-size="19" fill="#585E67">ScheduleItem &#183; ScheduleDays</text>
+
+<path d="M480 700 V746" fill="none" stroke="#1F5FBF" stroke-width="3" stroke-dasharray="11 8" marker-end="url(#aa)"></path>
+<text x="500" y="730" font-size="20" font-weight="600" fill="#1F5FBF">first access per session only</text>
+
+<rect x="210" y="752" width="540" height="94" rx="8" fill="#EDF3FD" stroke="#1F5FBF" stroke-width="2.2"></rect>
+<rect x="218" y="760" width="524" height="78" rx="5" fill="none" stroke="#1F5FBF" stroke-width="1.2" opacity="0.5"></rect>
+<text x="238" y="792" font-size="26" font-weight="600" fill="#1F5FBF">IScheduleProvider</text>
+<text x="238" y="822" font-size="18" fill="#585E67" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Task&lt;List&lt;ScheduleItem&gt;&gt; GetScheduleAsync()</text>
+
+<path d="M480 846 V912" fill="none" stroke="#1F5FBF" stroke-width="2.8" marker-end="url(#aa)"></path>
+<text x="462" y="890" font-size="19" font-weight="600" fill="#1F5FBF" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">DataSource = Csv (default)</text>
+
+<path d="M750 799 H1120 V912" fill="none" stroke="#B3B8C0" stroke-width="2.2" stroke-dasharray="9 7" marker-end="url(#ao)"></path>
+<text x="774" y="788" font-size="19" fill="#868D96" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">DataSource = Live</text>
+
+<text x="800" y="874" font-size="19" fill="#585E67" text-anchor="middle">selected at startup by <tspan font-size="18" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">UnizaPlus:DataSource</tspan></text>
+<text x="800" y="898" font-size="19" fill="#585E67" text-anchor="middle">one registered in DI, never both</text>
+
+<rect x="250" y="918" width="460" height="82" rx="10" fill="#EDF3FD" stroke="#1F5FBF" stroke-width="2.2"></rect>
+<text x="274" y="954" font-size="24" font-weight="600" fill="#1F5FBF">CsvScheduleProvider</text>
+<text x="274" y="984" font-size="19" fill="#585E67">reads a file from disk</text>
+
+<path d="M480 1000 V1040" fill="none" stroke="#1F5FBF" stroke-width="2.8" marker-end="url(#aa)"></path>
+
+<path d="M290 1046 H670 V1100 C623 1122 576 1080 480 1100 C384 1120 337 1084 290 1100 Z" fill="#EDF3FD" stroke="#1F5FBF" stroke-width="2.2"></path>
+<text x="480" y="1080" font-size="20" font-weight="600" fill="#1F5FBF" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">sample-data/schedule.csv</text>
+
+<rect x="900" y="918" width="440" height="82" rx="10" fill="#F6F5F2" stroke="#B3B8C0" stroke-width="1.8" stroke-dasharray="8 6"></rect>
+<text x="924" y="954" font-size="24" font-weight="600" fill="#868D96">SeleniumScheduleProvider</text>
+<text x="924" y="984" font-size="19" fill="#868D96">starts the scraper as a separate process</text>
+
+<g font-size="18" fill="#868D96">
+<text x="1500" y="948">not registered in DI in</text>
+<text x="1500" y="972">Csv mode, so it cannot</text>
+<text x="1500" y="996">be constructed</text>
+</g>
+
+<path d="M1120 1000 V1034" fill="none" stroke="#B3B8C0" stroke-width="2.2" stroke-dasharray="9 7" marker-end="url(#ao)"></path>
+
+<rect x="910" y="1040" width="420" height="68" rx="10" fill="#F6F5F2" stroke="#B3B8C0" stroke-width="1.8" stroke-dasharray="8 6"></rect>
+<text x="934" y="1074" font-size="24" font-weight="600" fill="#868D96">UnizaPlusBackEnd</text>
+<text x="934" y="1100" font-size="18" fill="#868D96">console app &#183; Selenium WebDriver + Chrome</text>
+
+<path d="M1120 1108 V1128" fill="none" stroke="#B3B8C0" stroke-width="2.2" stroke-dasharray="9 7" marker-end="url(#ao)"></path>
+
+<path d="M960 1145 V1185 A160 11 0 0 0 1280 1185 V1145 Z" fill="#F6F5F2" stroke="#B3B8C0" stroke-width="1.8" stroke-dasharray="8 6"></path>
+<ellipse cx="1120" cy="1145" rx="160" ry="11" fill="#F6F5F2" stroke="#B3B8C0" stroke-width="1.8" stroke-dasharray="8 6"></ellipse>
+<text x="1120" y="1178" font-size="20" font-weight="600" fill="#868D96" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">vzdelavanie.uniza.sk</text>
+
+<text x="1350" y="1238" font-size="18" fill="#868D96" text-anchor="end">separate process, outside the web app &#183; not in the Docker image</text>
+</svg>

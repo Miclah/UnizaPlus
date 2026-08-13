@@ -57,16 +57,14 @@ Vznikol ako univerzitný projekt. Rozhranie je po slovensky aj po anglicky, prep
 
 ## Screenshoty
 
-<!-- TODO: doplniť tieto tri -->
-
 ### Týždenná mriežka so štatistikami
-![Týždenná mriežka](docs/screenshots/schedule-grid.png)
+![Týždenná mriežka](docs/screenshots/schedule-grid.sk.png)
 
 ### Generátor s variantom bez kolízií
-![Generátor](docs/screenshots/generate-schedule.png)
+![Generátor](docs/screenshots/generate-schedule.sk.png)
 
 ### Export s rozsahom dátumov semestra pre .ics
-![Export](docs/screenshots/schedule-export.png)
+![Export](docs/screenshots/schedule-export.sk.png)
 
 ## Technológie
 

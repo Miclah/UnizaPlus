@@ -57,16 +57,14 @@ It was written as a university project. The interface is available in English an
 
 ## Screenshots
 
-<!-- TODO: capture these three -->
-
 ### The weekly grid with statistics
-![Weekly grid](docs/screenshots/schedule-grid.png)
+![Weekly grid](docs/screenshots/schedule-grid.en.png)
 
 ### The generator, showing a conflict-free variant
-![Generator](docs/screenshots/generate-schedule.png)
+![Generator](docs/screenshots/generate-schedule.en.png)
 
 ### Export, with the semester date range for .ics
-![Export](docs/screenshots/schedule-export.png)
+![Export](docs/screenshots/schedule-export.en.png)
 
 ## Tech stack
 
