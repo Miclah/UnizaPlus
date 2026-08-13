@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using UnizaPlusBackEnd.Models;
+using UnizaPlus.Models;
 
 namespace UnizaPlus.Services
 {

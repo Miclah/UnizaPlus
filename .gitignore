@@ -397,4 +397,18 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-AUDIT.md
+*.md
+!readme.md
+!README.sk.md
+
+# Local Docker Compose overrides (copied from .env.example, may hold
+# machine-specific or eventually secret values - never commit this).
+.env
+
+# Exported/uploaded schedule data is per-visitor session state, not a build artifact,
+# but it was previously committed by accident (real professor names ended up under
+# wwwroot, publicly servable). Nothing in the app writes here today - keep it that way.
+UnizaPlus.Web/wwwroot/exports/
+UnizaPlus.Web/wwwroot/uploads/
+
+Petran_Michal_C#_and_DotNet.pdf

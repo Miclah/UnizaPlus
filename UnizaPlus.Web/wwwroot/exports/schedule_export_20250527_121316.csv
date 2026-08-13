@@ -1,6 +1,0 @@
-Day,StartHour,Duration,Type,Professor,Classroom,Subject,SubjectCode,StudentGroups
-"Pondelok",10,2,"L","Ing. Michal Mulík PhD.","RA012 / FRA12","vývoj aplikácií pre mobilné zariadenia","6BI0048","5ZYI21..."
-"Utorok",8,2,"P","doc. Ing. Michal Kvet PhD.","AR1A3 / NR3","databázové systémy","6BI0005","5ZYS21..."
-"Streda",8,2,"P","RNDr. Ida Stankovianska CSc.","AR1A3 / NR3","pravdepodobnost a statistika","6UA0002","5ZYI21..."
-"Štvrtok",8,2,"L","prof. Ing. Emil Krsák PhD.","AR1A3 / NR3","jazyk C# a .NET","6BI0016","5ZYI21..."
-"Piatok",8,2,"P","Ing. Michal Varga PhD.","BG2A1 D...","algoritmy a údajové struktúry 1","6UI0004","5ZYR21..."

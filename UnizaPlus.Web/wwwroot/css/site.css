@@ -1,5 +1,65 @@
+/* ==========================================================================
+   Design tokens - single source of truth for color, type and spacing.
+   Bootstrap 5.1's component CSS mostly hardcodes its own colors rather than
+   reading CSS variables, so the overrides below re-point the handful of
+   Bootstrap classes this app actually uses at these tokens instead of
+   patching bootstrap.min.css itself.
+   ========================================================================== */
+:root {
+  --color-primary: #1d4ed8;
+  --color-primary-rgb: 29, 78, 216;
+  --color-primary-dark: #1e40af;
+  --color-primary-light: #eff6ff;
+  --color-primary-border: #bfdbfe;
+
+  --color-text: #1f2937;
+  --color-text-muted: #6b7280;
+  --color-border: #dee2e6;
+  --color-border-strong: #ced4da;
+  --color-surface: #fff;
+  --color-bg: #f8f9fa;
+
+  --color-danger: #dc3545;
+  --color-danger-light: #f8d7da;
+  --color-success: #198754;
+  --color-success-light: #d4edda;
+  --color-warning: #ffc107;
+  --color-warning-light: #fff3cd;
+  --color-info: #0dcaf0;
+  --color-info-light: #d1ecf1;
+
+  --fs-xs: .75rem;
+  --fs-sm: .85rem;
+  --fs-base: 1rem;
+  --fs-lg: 1.15rem;
+  --fs-xl: 1.5rem;
+  --fs-2xl: 1.85rem;
+
+  --fw-normal: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  --space-1: .25rem;
+  --space-2: .5rem;
+  --space-3: .75rem;
+  --space-4: 1rem;
+
+  --radius-sm: .375rem;
+  --radius-md: .5rem;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .08);
+  --shadow-md: 0 4px 10px rgba(0, 0, 0, .12);
+  --shadow-focus: 0 0 0 .2rem rgba(var(--color-primary-rgb), .35);
+
+  /* Bootstrap 5.1's .text-primary/.bg-primary utilities read this variable directly. */
+  --bs-primary-rgb: var(--color-primary-rgb);
+}
+
 html {
   font-size: 14px;
+  position: relative;
+  min-height: 100%;
 }
 
 @media (min-width: 768px) {
@@ -8,39 +68,130 @@ html {
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
 body {
   margin-bottom: 60px;
+  color: var(--color-text);
+  background-color: var(--color-bg);
 }
 
-
-.hour-cell {
-    overflow: visible; 
+h1 {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
 }
 
-    .hour-cell .schedule-item[data-duration="1"] {
-        width: calc(100% - 4px); 
-    }
+h2 {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-semibold);
+}
 
-    .hour-cell .schedule-item[data-duration="2"] {
-        width: calc(200% - 4px);
-        z-index: 11;
-    }
+h3 {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+}
 
-    .hour-cell .schedule-item[data-duration="3"] {
-        width: calc(300% - 4px); 
-        z-index: 12;
-    }
+/* ---- Bootstrap re-theme: links, buttons, alerts, focus ring ---- */
 
-    .hour-cell .schedule-item[data-duration="4"] {
-        width: calc(400% - 4px); 
-        z-index: 13;
-    }
+a {
+  color: var(--color-primary);
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-select:focus, .form-check-input:focus {
+  box-shadow: var(--shadow-focus);
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+  background-color: var(--color-primary-dark) !important;
+  border-color: var(--color-primary-dark) !important;
+}
+
+.btn-outline-danger:hover {
+  color: #fff;
+}
+
+.navbar-brand {
+  color: var(--color-primary);
+  font-weight: var(--fw-bold);
+}
+
+.nav-link {
+  font-weight: var(--fw-medium);
+}
+
+.nav-link:hover {
+  color: var(--color-primary) !important;
+}
+
+.card {
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.card-title {
+  font-weight: var(--fw-semibold);
+}
+
+.alert {
+  border-radius: var(--radius-sm);
+}
+
+/* ---- Page action bar (Index toolbar) - explicit stacking on narrow screens
+   instead of relying on flex-wrap shrink math, so it can't silently overflow. ---- */
+
+.schedule-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.schedule-actions-form {
+  display: inline-flex;
+}
+
+@media (max-width: 575.98px) {
+  .schedule-actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .schedule-actions .btn {
+    width: 100%;
+  }
+
+  .schedule-actions-form {
+    width: 100%;
+  }
+}
+
+/* ---- Print: strip everything but the page's actual content - no nav, no chrome, no
+   buttons/forms anywhere. Page-specific print rules (the schedule grid itself) live in
+   schedule.css, scoped next to the screen rules they override. ---- */
+@media print {
+  header, footer {
+    display: none !important;
+  }
+
+  body {
+    margin: 0;
+    background-color: #fff;
+  }
+
+  .btn, form, .language-switcher {
+    display: none !important;
+  }
+
+  .card {
+    box-shadow: none;
+    border: none;
+  }
+}

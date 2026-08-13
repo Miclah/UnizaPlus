@@ -1,0 +1,41 @@
+@page
+@model UploadScheduleModel
+@{
+    ViewData["Title"] = Localizer["Upload custom schedule (CSV)"];
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">@Localizer["Upload custom schedule (CSV)"]</h1>
+
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        <div class="alert alert-success">@Model.SuccessMessage</div>
+    }
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">@Model.ErrorMessage</div>
+    }
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">@Localizer["CSV format"]</h5>
+            <p>
+                @Html.Raw(Localizer["Header (required columns <code>Subject,Type,Day,Start,End</code>; the rest are optional):"])<br />
+                <code>Subject,SubjectCode,Type,Day,Start,End,Room,Teacher,Group</code>
+            </p>
+            <p class="form-text">
+                @Html.Raw(Localizer["Type: <code>P</code> (lecture), <code>C</code> (exercise) or <code>L</code> (laboratory exercise)."])
+                @Html.Raw(Localizer["Day: <code>Monday</code>-<code>Friday</code> (Slovak names such as <code>Pondelok</code> are also accepted, for files uploaded under the old interface). Start/End: hour 7-21."])
+                @Localizer["Rows with a missing or invalid value are skipped; they do not cause an application error."]
+            </p>
+
+            <form method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <input type="file" name="file" class="form-control" accept=".csv" required />
+                </div>
+                <button type="submit" class="btn btn-primary">@Localizer["Upload"]</button>
+                <a asp-page="Index" class="btn btn-secondary">@Localizer["Back to Schedule"]</a>
+            </form>
+        </div>
+    </div>
+</div>

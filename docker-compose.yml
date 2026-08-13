@@ -1,0 +1,17 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${HOST_PORT:-8080}:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Production}
+      # Csv is the only mode this image supports: it reads schedule.csv from disk
+      # and needs no browser. "Live" mode requires UnizaPlusBackEnd + Chrome, which
+      # this image intentionally does not ship.
+      UnizaPlus__DataSource: ${UNIZAPLUS_DATASOURCE:-Csv}
+    volumes:
+      # Swap the bundled demo schedule without rebuilding the image.
+      - ./sample-data:/app/sample-data:ro
+    restart: unless-stopped

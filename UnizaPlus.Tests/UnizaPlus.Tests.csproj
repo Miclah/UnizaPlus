@@ -12,6 +12,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.10" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.10" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
     <PackageReference Include="xunit" Version="2.9.3" />
@@ -28,6 +29,13 @@
   <ItemGroup>
     <ProjectReference Include="..\UnizaPlus.Web\UnizaPlus.Web.csproj" />
     <ProjectReference Include="..\UnizaPlusBackEnd\UnizaPlusBackEnd.csproj" />
+    <ProjectReference Include="..\UnizaPlus.Models\UnizaPlus.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- WebApplicationFactory<Program> hosts UnizaPlus.Web in-process, so CsvScheduleProvider's
+         AppContext.BaseDirectory lookup needs the sample data here too, not just in UnizaPlus.Web's output. -->
+    <Content Include="..\sample-data\schedule.csv" Link="sample-data\schedule.csv" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

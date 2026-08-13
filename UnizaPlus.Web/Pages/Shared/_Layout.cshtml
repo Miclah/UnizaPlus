@@ -1,9 +1,27 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using Microsoft.AspNetCore.Localization
+@{
+    var currentCulture = Context.Features.Get<IRequestCultureFeature>()?.RequestCulture.UICulture.TwoLetterISOLanguageName ?? "en";
+    var returnUrl = Uri.EscapeDataString(Context.Request.Path + Context.Request.QueryString);
+    var pageTitle = $"{ViewData["Title"]} — UnizaPlus";
+    var description = ViewData["Description"] as string;
+}
+<!DOCTYPE html>
+<html lang="@currentCulture">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - UnizaPlus</title>
+    <title>@pageTitle</title>
+    @if (!string.IsNullOrEmpty(description))
+    {
+        <meta name="description" content="@description" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="@pageTitle" />
+        <meta property="og:description" content="@description" />
+        @* TODO: add a screenshot of the schedule grid at wwwroot/img/schedule-preview.png and
+           point this at its absolute URL (social crawlers need a full https:// address, not a
+           relative one) once the app has a real domain. *@
+        <meta property="og:image" content="/img/schedule-preview.png" />
+    }
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/schedule.css" asp-append-version="true" />
@@ -15,18 +33,22 @@
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">UnizaPlus</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                        aria-expanded="false" aria-label="@Localizer["Toggle navigation"]">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Schedule</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">@Localizer["Schedule"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/ScheduleExport">Export</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/ScheduleExport">@Localizer["Export"]</a>
                         </li>
                     </ul>
+                    <div class="language-switcher" role="group" aria-label="@Localizer["Language"]">
+                        <a class="btn btn-sm @(currentCulture == "en" ? "btn-secondary" : "btn-outline-secondary")" href="/set-language?culture=en&returnUrl=@returnUrl">EN</a>
+                        <a class="btn btn-sm @(currentCulture == "sk" ? "btn-secondary" : "btn-outline-secondary")" href="/set-language?culture=sk&returnUrl=@returnUrl">SK</a>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -39,13 +61,12 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; @DateTime.Now.Year - UnizaPlus - Schedule Manager
+            &copy; @DateTime.UtcNow.Year - UnizaPlus - @Localizer["Schedule Manager"] - @Localizer["Author"]: Michal Petrán
         </div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

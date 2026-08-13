@@ -1,0 +1,22 @@
+Subject,SubjectCode,Type,Day,Start,End,Room,Teacher,Group
+Databázové systémy,6BI0101,P,Pondelok,8,10,RA1A3,"doc. Ing. Ján Novák, PhD.",FRI22
+Diskrétna matematika,6UA0101,C,Pondelok,9,11,AF3A6,"Ing. Peter Horák, PhD.",FRI22
+Operačné systémy,6BI0103,L,Pondelok,13,15,RC101,"Ing. Tomáš Krajčí, PhD.",FRI22
+Algoritmy a dátové štruktúry,6BI0102,P,Utorok,8,10,AR1A3,"prof. Ing. Mária Kováčová, PhD.",FRI22
+Algoritmy a dátové štruktúry,6BI0102,C,Utorok,10,12,RA222,"prof. Ing. Mária Kováčová, PhD.",FRI22
+Počítačové siete,6BI0104,P,Utorok,14,16,BC245,"RNDr. Zuzana Balážová, PhD.",FRI22
+Softvérové inžinierstvo,6BI0105,P,Streda,8,10,AF3A6,"doc. RNDr. Milan Šimko, PhD.",FRI22
+Webové aplikácie,6BI0106,L,Streda,10,12,RC101,"Ing. Lucia Vargová, PhD.",FRI22
+Anglický jazyk 2,6BJ0101,C,Streda,12,13,NB213,Mgr. James Wilson,FRI22
+Databázové systémy,6BI0101,C,Streda,15,17,RA1A3,"doc. Ing. Ján Novák, PhD.",FRI22
+Diskrétna matematika,6UA0101,P,Štvrtok,8,10,AR1A3,"Ing. Peter Horák, PhD.",FRI22
+Umelá inteligencia,6BI0107,P,Štvrtok,10,12,BC245,"Ing. Tomáš Krajčí, PhD.",FRI22
+Umelá inteligencia,6BI0107,L,Štvrtok,13,15,RC101,"Ing. Tomáš Krajčí, PhD.",FRI22
+Operačné systémy,6BI0103,C,Piatok,8,10,RA222,"Ing. Tomáš Krajčí, PhD.",FRI22
+Počítačové siete,6BI0104,C,Piatok,10,12,AF3A6,"RNDr. Zuzana Balážová, PhD.",FRI22
+Softvérové inžinierstvo,6BI0105,C,Piatok,12,13,NB213,"doc. RNDr. Milan Šimko, PhD.",FRI22
+Fyzika,6VF0101,P,Pondelok,11,13,BC112,"Ing. Radovan Beňo, PhD.",FRI22a
+Fyzika,6VF0101,P,Utorok,9,11,BC112,"Ing. Radovan Beňo, PhD.",FRI22b
+Fyzika,6VF0101,P,Piatok,13,15,BC112,"Ing. Radovan Beňo, PhD.",FRI22c
+Etika,6UA0301,C,Pondelok,11,12,NB108,"Mgr. Silvia Bartošová",FRI22a
+Etika,6UA0301,C,Štvrtok,15,16,NB108,"Mgr. Silvia Bartošová",FRI22b

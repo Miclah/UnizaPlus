@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- Layout / navigation -->
+  <data name="Schedule" xml:space="preserve"><value>Schedule</value></data>
+  <data name="Export" xml:space="preserve"><value>Export</value></data>
+  <data name="Language" xml:space="preserve"><value>Language</value></data>
+  <data name="Toggle navigation" xml:space="preserve"><value>Toggle navigation</value></data>
+  <data name="Schedule Manager" xml:space="preserve"><value>Schedule Manager</value></data>
+  <data name="Author" xml:space="preserve"><value>Author</value></data>
+
+  <!-- Day names (canonical English values from ScheduleDays.All) -->
+  <data name="Monday" xml:space="preserve"><value>Monday</value></data>
+  <data name="Tuesday" xml:space="preserve"><value>Tuesday</value></data>
+  <data name="Wednesday" xml:space="preserve"><value>Wednesday</value></data>
+  <data name="Thursday" xml:space="preserve"><value>Thursday</value></data>
+  <data name="Friday" xml:space="preserve"><value>Friday</value></data>
+
+  <!-- Index page -->
+  <data name="UNIZA Schedule" xml:space="preserve"><value>UNIZA Schedule</value></data>
+  <data name="Manage your UNIZA class schedule online: add, edit, and drag-and-drop classes in an interactive weekly view." xml:space="preserve"><value>Manage your UNIZA class schedule online: add, edit, and drag-and-drop classes in an interactive weekly view.</value></data>
+  <data name="Add New Item" xml:space="preserve"><value>Add New Item</value></data>
+  <data name="Upload CSV" xml:space="preserve"><value>Upload CSV</value></data>
+  <data name="Refresh Schedule Data" xml:space="preserve"><value>Refresh Schedule Data</value></data>
+  <data name="Reset" xml:space="preserve"><value>Reset</value></data>
+  <data name="Refreshing schedule data. This may take several minutes..." xml:space="preserve"><value>Refreshing schedule data. This may take several minutes...</value></data>
+  <data name="Your schedule is empty." xml:space="preserve"><value>Your schedule is empty.</value></data>
+  <data name="Use &lt;strong&gt;Add New Item&lt;/strong&gt; to create entries by hand, &lt;strong&gt;Upload CSV&lt;/strong&gt; to load a schedule from a file, or &lt;strong&gt;Reset&lt;/strong&gt; to load the sample schedule." xml:space="preserve"><value>Use &lt;strong&gt;Add New Item&lt;/strong&gt; to create entries by hand, &lt;strong&gt;Upload CSV&lt;/strong&gt; to load a schedule from a file, or &lt;strong&gt;Reset&lt;/strong&gt; to load the sample schedule.</value></data>
+  <data name="Lecture (P)" xml:space="preserve"><value>Lecture (P)</value></data>
+  <data name="Exercise (C)" xml:space="preserve"><value>Exercise (C)</value></data>
+  <data name="Lab (L)" xml:space="preserve"><value>Lab (L)</value></data>
+  <data name="{0} conflicting item: drag it to a free slot to resolve" xml:space="preserve"><value>{0} conflicting item: drag it to a free slot to resolve</value></data>
+  <data name="{0} conflicting items: drag one to a free slot to resolve" xml:space="preserve"><value>{0} conflicting items: drag one to a free slot to resolve</value></data>
+  <data name="No classes." xml:space="preserve"><value>No classes.</value></data>
+  <data name="Conflict: overlaps with another item" xml:space="preserve"><value>Conflict: overlaps with another item</value></data>
+  <data name="Conflicts with another item" xml:space="preserve"><value>Conflicts with another item</value></data>
+  <data name="Cannot move item: invalid item identifier" xml:space="preserve"><value>Cannot move item: invalid item identifier</value></data>
+  <data name="Failed to move item: {0}" xml:space="preserve"><value>Failed to move item: {0}</value></data>
+  <data name="An error occurred when trying to move the item." xml:space="preserve"><value>An error occurred when trying to move the item.</value></data>
+  <data name="Failed to refresh schedule data. Please try again later." xml:space="preserve"><value>Failed to refresh schedule data. Please try again later.</value></data>
+  <data name="Lecture" xml:space="preserve"><value>Lecture</value></data>
+  <data name="Exercise" xml:space="preserve"><value>Exercise</value></data>
+  <data name="Lab" xml:space="preserve"><value>Lab</value></data>
+
+  <!-- Index page statistics panel -->
+  <data name="hours / week" xml:space="preserve"><value>hours / week</value></data>
+  <data name="P / C / L" xml:space="preserve"><value>P / C / L</value></data>
+  <data name="gaps between classes" xml:space="preserve"><value>gaps between classes</value></data>
+  <data name="earliest start" xml:space="preserve"><value>earliest start</value></data>
+  <data name="latest end" xml:space="preserve"><value>latest end</value></data>
+  <data name="free days" xml:space="preserve"><value>free days</value></data>
+
+  <!-- Upload schedule page -->
+  <data name="Upload custom schedule (CSV)" xml:space="preserve"><value>Upload custom schedule (CSV)</value></data>
+  <data name="CSV format" xml:space="preserve"><value>CSV format</value></data>
+  <data name="Header (required columns &lt;code&gt;Subject,Type,Day,Start,End&lt;/code&gt;; the rest are optional):" xml:space="preserve"><value>Header (required columns &lt;code&gt;Subject,Type,Day,Start,End&lt;/code&gt;; the rest are optional):</value></data>
+  <data name="Type: &lt;code&gt;P&lt;/code&gt; (lecture), &lt;code&gt;C&lt;/code&gt; (exercise) or &lt;code&gt;L&lt;/code&gt; (laboratory exercise)." xml:space="preserve"><value>Type: &lt;code&gt;P&lt;/code&gt; (lecture), &lt;code&gt;C&lt;/code&gt; (exercise) or &lt;code&gt;L&lt;/code&gt; (laboratory exercise).</value></data>
+  <data name="Day: &lt;code&gt;Monday&lt;/code&gt;-&lt;code&gt;Friday&lt;/code&gt; (Slovak names such as &lt;code&gt;Pondelok&lt;/code&gt; are also accepted, for files uploaded under the old interface). Start/End: hour 7-21." xml:space="preserve"><value>Day: &lt;code&gt;Monday&lt;/code&gt;-&lt;code&gt;Friday&lt;/code&gt; (Slovak names such as &lt;code&gt;Pondelok&lt;/code&gt; are also accepted, for files uploaded under the old interface). Start/End: hour 7-21.</value></data>
+  <data name="Rows with a missing or invalid value are skipped; they do not cause an application error." xml:space="preserve"><value>Rows with a missing or invalid value are skipped; they do not cause an application error.</value></data>
+  <data name="Upload" xml:space="preserve"><value>Upload</value></data>
+  <data name="Please select a CSV file." xml:space="preserve"><value>Please select a CSV file.</value></data>
+  <data name="The file must have a .csv extension." xml:space="preserve"><value>The file must have a .csv extension.</value></data>
+  <data name="The file could not be processed: {0}" xml:space="preserve"><value>The file could not be processed: {0}</value></data>
+  <data name="Uploaded {0} items. Skipped rows: {1} (reasons are in the application log)." xml:space="preserve"><value>Uploaded {0} items. Skipped rows: {1} (reasons are in the application log).</value></data>
+  <data name="Uploaded {0} items." xml:space="preserve"><value>Uploaded {0} items.</value></data>
+  <data name="The file is too large (max {0} MB)." xml:space="preserve"><value>The file is too large (max {0} MB).</value></data>
+
+  <!-- ScheduleCsvParser warnings -->
+  <data name="The file is empty." xml:space="preserve"><value>The file is empty.</value></data>
+  <data name="Missing required columns: {0}. Expected header: {1},Room,Teacher,Group,SubjectCode" xml:space="preserve"><value>Missing required columns: {0}. Expected header: {1},Room,Teacher,Group,SubjectCode</value></data>
+  <data name="Row {0}: missing subject (Subject), row skipped." xml:space="preserve"><value>Row {0}: missing subject (Subject), row skipped.</value></data>
+  <data name="Row {0}: invalid or missing day '{1}', row skipped." xml:space="preserve"><value>Row {0}: invalid or missing day '{1}', row skipped.</value></data>
+  <data name="Row {0}: invalid or missing type '{1}' (expected P, C or L), row skipped." xml:space="preserve"><value>Row {0}: invalid or missing type '{1}' (expected P, C or L), row skipped.</value></data>
+  <data name="Row {0}: invalid time range Start='{1}' End='{2}', row skipped." xml:space="preserve"><value>Row {0}: invalid time range Start='{1}' End='{2}', row skipped.</value></data>
+  <data name="Row {0}: time range Start={1} End={2} is outside the supported range ({3}-{4}, max duration {5}h), row skipped." xml:space="preserve"><value>Row {0}: time range Start={1} End={2} is outside the supported range ({3}-{4}, max duration {5}h), row skipped.</value></data>
+  <data name="The file has more than {0} data rows; the rest were ignored." xml:space="preserve"><value>The file has more than {0} data rows; the rest were ignored.</value></data>
+  <data name="Row {0}: too many columns, row skipped." xml:space="preserve"><value>Row {0}: too many columns, row skipped.</value></data>
+  <data name="Row {0}: a field exceeds {1} characters, row skipped." xml:space="preserve"><value>Row {0}: a field exceeds {1} characters, row skipped.</value></data>
+
+  <!-- ScheduleController API messages -->
+  <data name="Invalid item ID" xml:space="preserve"><value>Invalid item ID</value></data>
+  <data name="Invalid day" xml:space="preserve"><value>Invalid day</value></data>
+  <data name="Schedule item not found" xml:space="preserve"><value>Schedule item not found</value></data>
+  <data name="This time slot is already occupied or overlaps with another item" xml:space="preserve"><value>This time slot is already occupied or overlaps with another item</value></data>
+  <data name="An error occurred while processing your request" xml:space="preserve"><value>An error occurred while processing your request</value></data>
+  <data name="Invalid or missing anti-forgery token." xml:space="preserve"><value>Invalid or missing anti-forgery token.</value></data>
+
+  <!-- ScheduleEdit page -->
+  <data name="Add Schedule Item" xml:space="preserve"><value>Add Schedule Item</value></data>
+  <data name="Edit Schedule Item" xml:space="preserve"><value>Edit Schedule Item</value></data>
+  <data name="Add New Schedule Item" xml:space="preserve"><value>Add New Schedule Item</value></data>
+  <data name="Day" xml:space="preserve"><value>Day</value></data>
+  <data name="Type" xml:space="preserve"><value>Type</value></data>
+  <data name="Laboratory (L)" xml:space="preserve"><value>Laboratory (L)</value></data>
+  <data name="Start Time" xml:space="preserve"><value>Start Time</value></data>
+  <data name="Duration (hours)" xml:space="preserve"><value>Duration (hours)</value></data>
+  <data name="Subject" xml:space="preserve"><value>Subject</value></data>
+  <data name="Subject Code" xml:space="preserve"><value>Subject Code</value></data>
+  <data name="Professor" xml:space="preserve"><value>Professor</value></data>
+  <data name="Classroom" xml:space="preserve"><value>Classroom</value></data>
+  <data name="Student Groups" xml:space="preserve"><value>Student Groups</value></data>
+  <data name="Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Subject is required." xml:space="preserve"><value>Subject is required.</value></data>
+  <data name="Professor is required." xml:space="preserve"><value>Professor is required.</value></data>
+  <data name="Classroom is required." xml:space="preserve"><value>Classroom is required.</value></data>
+  <data name="Invalid day." xml:space="preserve"><value>Invalid day.</value></data>
+  <data name="Duration must be between 1 and 4 hours." xml:space="preserve"><value>Duration must be between 1 and 4 hours.</value></data>
+  <data name="Start time must be between 7:00 and 20:00." xml:space="preserve"><value>Start time must be between 7:00 and 20:00.</value></data>
+  <data name="Invalid type." xml:space="preserve"><value>Invalid type.</value></data>
+  <data name="This time slot is already occupied or overlaps with another item." xml:space="preserve"><value>This time slot is already occupied or overlaps with another item.</value></data>
+  <data name="Text fields must be at most {0} characters." xml:space="preserve"><value>Text fields must be at most {0} characters.</value></data>
+
+  <!-- ScheduleDetail page -->
+  <data name="Schedule Item Details" xml:space="preserve"><value>Schedule Item Details</value></data>
+  <data name="Time" xml:space="preserve"><value>Time</value></data>
+  <data name="Back to Schedule" xml:space="preserve"><value>Back to Schedule</value></data>
+  <data name="Edit" xml:space="preserve"><value>Edit</value></data>
+  <data name="Schedule item not found." xml:space="preserve"><value>Schedule item not found.</value></data>
+  <data name="Laboratory Exercise" xml:space="preserve"><value>Laboratory Exercise</value></data>
+
+  <!-- ScheduleExport page -->
+  <data name="Export Schedule" xml:space="preserve"><value>Export Schedule</value></data>
+  <data name="Export Options" xml:space="preserve"><value>Export Options</value></data>
+  <data name="Download Schedule" xml:space="preserve"><value>Download Schedule</value></data>
+  <data name="Format" xml:space="preserve"><value>Format</value></data>
+  <data name="CSV (re-uploadable)" xml:space="preserve"><value>CSV (re-uploadable)</value></data>
+  <data name="iCalendar (.ics) - Google Calendar, Outlook, ..." xml:space="preserve"><value>iCalendar (.ics) - Google Calendar, Outlook, ...</value></data>
+  <data name="Semester start" xml:space="preserve"><value>Semester start</value></data>
+  <data name="The first week's classes are anchored here; each item repeats weekly on its own day from this date." xml:space="preserve"><value>The first week's classes are anchored here; each item repeats weekly on its own day from this date.</value></data>
+  <data name="Semester end" xml:space="preserve"><value>Semester end</value></data>
+  <data name="Last day the weekly recurrence repeats until (RRULE UNTIL)." xml:space="preserve"><value>Last day the weekly recurrence repeats until (RRULE UNTIL).</value></data>
+  <data name="The semester end date must be on or after the start date." xml:space="preserve"><value>The semester end date must be on or after the start date.</value></data>
+
+  <!-- Error page -->
+  <data name="Error" xml:space="preserve"><value>Error</value></data>
+  <data name="Error." xml:space="preserve"><value>Error.</value></data>
+  <data name="An error occurred while processing your request." xml:space="preserve"><value>An error occurred while processing your request.</value></data>
+  <data name="Request ID:" xml:space="preserve"><value>Request ID:</value></data>
+  <data name="Development Mode" xml:space="preserve"><value>Development Mode</value></data>
+  <data name="Swapping to the &lt;strong&gt;Development&lt;/strong&gt; environment displays detailed information about the error that occurred." xml:space="preserve"><value>Swapping to the &lt;strong&gt;Development&lt;/strong&gt; environment displays detailed information about the error that occurred.</value></data>
+  <data name="&lt;strong&gt;The Development environment shouldn't be enabled for deployed applications.&lt;/strong&gt; It can result in displaying sensitive information from exceptions to end users. For local debugging, enable the &lt;strong&gt;Development&lt;/strong&gt; environment by setting the &lt;strong&gt;ASPNETCORE_ENVIRONMENT&lt;/strong&gt; environment variable to &lt;strong&gt;Development&lt;/strong&gt; and restarting the app." xml:space="preserve"><value>&lt;strong&gt;The Development environment shouldn't be enabled for deployed applications.&lt;/strong&gt; It can result in displaying sensitive information from exceptions to end users. For local debugging, enable the &lt;strong&gt;Development&lt;/strong&gt; environment by setting the &lt;strong&gt;ASPNETCORE_ENVIRONMENT&lt;/strong&gt; environment variable to &lt;strong&gt;Development&lt;/strong&gt; and restarting the app.</value></data>
+
+  <!-- StatusCode page -->
+  <data name="Page not found" xml:space="preserve"><value>Page not found</value></data>
+  <data name="The page you are looking for does not exist or has moved." xml:space="preserve"><value>The page you are looking for does not exist or has moved.</value></data>
+  <data name="Server error" xml:space="preserve"><value>Server error</value></data>
+  <data name="Something went wrong on our end. Please try again later." xml:space="preserve"><value>Something went wrong on our end. Please try again later.</value></data>
+  <data name="Something went wrong" xml:space="preserve"><value>Something went wrong</value></data>
+  <data name="An unexpected error occurred while handling your request." xml:space="preserve"><value>An unexpected error occurred while handling your request.</value></data>
+
+  <!-- Privacy page -->
+  <data name="Privacy Policy" xml:space="preserve"><value>Privacy Policy</value></data>
+  <data name="Privacy policy body" xml:space="preserve"><value>UnizaPlus does not require an account and does not track visitors. Your schedule lives only in an essential session cookie's server-side memory for up to 30 minutes of inactivity - nothing is written to disk, shared with third parties, or kept after your session ends.</value></data>
+
+  <!-- Generate Schedule page -->
+  <data name="Generate Schedule" xml:space="preserve"><value>Generate Schedule</value></data>
+  <data name="Preferences" xml:space="preserve"><value>Preferences</value></data>
+  <data name="Optional - used only to rank equally good schedules against each other, never to rule one out." xml:space="preserve"><value>Optional - used only to rank equally good schedules against each other, never to rule one out.</value></data>
+  <data name="No classes before 9:00" xml:space="preserve"><value>No classes before 9:00</value></data>
+  <data name="Minimise gaps between classes" xml:space="preserve"><value>Minimise gaps between classes</value></data>
+  <data name="Keep Friday free" xml:space="preserve"><value>Keep Friday free</value></data>
+  <data name="{0} alternative group(s) found." xml:space="preserve"><value>{0} alternative group(s) found.</value></data>
+  <data name="Your current schedule has no alternative groups (rows sharing the same subject and type but different group) to choose between - there is nothing to generate." xml:space="preserve"><value>Your current schedule has no alternative groups (rows sharing the same subject and type but different group) to choose between - there is nothing to generate.</value></data>
+  <data name="Variant {0} of {1}" xml:space="preserve"><value>Variant {0} of {1}</value></data>
+  <data name="Previous" xml:space="preserve"><value>Previous</value></data>
+  <data name="Next" xml:space="preserve"><value>Next</value></data>
+  <data name="This variant has no time conflicts." xml:space="preserve"><value>This variant has no time conflicts.</value></data>
+  <data name="No fully conflict-free combination exists. This is the best variant found, with {0} remaining conflict(s)." xml:space="preserve"><value>No fully conflict-free combination exists. This is the best variant found, with {0} remaining conflict(s).</value></data>
+  <data name="Use this schedule" xml:space="preserve"><value>Use this schedule</value></data>
+  <data name="Discard" xml:space="preserve"><value>Discard</value></data>
+  <data name="Generated schedule applied - no time conflicts." xml:space="preserve"><value>Generated schedule applied - no time conflicts.</value></data>
+  <data name="Generated schedule applied with {0} remaining conflict(s) - no fully conflict-free combination was found." xml:space="preserve"><value>Generated schedule applied with {0} remaining conflict(s) - no fully conflict-free combination was found.</value></data>
+</root>
