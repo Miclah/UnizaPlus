@@ -32,7 +32,7 @@ There is nothing to log into. The first page is the timetable itself, loaded fro
 
 It runs on the free Azure App Service tier, which has no Always On, so the site goes to sleep after about half an hour without visitors. The first request after that has to start it back up and will take a moment. There is no database to wake alongside it, so the wait is short and everything after it is immediate.
 
-![Walkthrough](docs/screenshots/walkthrough.gif) <!-- TODO: record a short GIF - open the timetable, drag one class into a free slot, run the generator, export to .ics -->
+![Walkthrough](docs/screenshots/walkthrough.en.gif)
 
 ## About this project
 

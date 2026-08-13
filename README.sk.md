@@ -32,7 +32,7 @@ Nie je sa kam prihlasovať. Hneď na prvej stránke je rozvrh, načítaný zo vz
 
 Beží na bezplatnej úrovni Azure App Service, ktorá nepodporuje Always On, takže po asi pol hodine bez návštev sa stránka uspí. Prvá požiadavka po takej pauze ju musí zobudiť a chvíľu potrvá. Nie je tu databáza, ktorú by bolo treba budiť spolu s ňou, takže je to otázka chvíle a všetko ďalšie je už okamžité.
 
-![Ukážka](docs/screenshots/walkthrough.gif) <!-- TODO: nahrať krátky GIF: otvorenie rozvrhu, presun jednej hodiny do voľného slotu, generátor, export do .ics -->
+![Ukážka](docs/screenshots/walkthrough.sk.gif)
 
 ## O projekte
 
