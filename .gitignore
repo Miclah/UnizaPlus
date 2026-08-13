@@ -411,6 +411,4 @@ FodyWeavers.xsd
 UnizaPlus.Web/wwwroot/exports/
 UnizaPlus.Web/wwwroot/uploads/
 
-# Personal submission document (name, study group, teacher, academic year). Scrubbed out
-# of git history entirely; keep it on disk locally, never track it again.
 Petran_Michal_C#_and_DotNet.pdf
