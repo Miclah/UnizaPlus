@@ -224,4 +224,4 @@ MIT License. See [LICENSE](LICENSE).
 ## Author
 
 Michal Petrán
-[GitHub](https://github.com/Miclah) · [LinkedIn](https://www.linkedin.com/in/mpetran)
+[GitHub](https://github.com/Miclah) · [LinkedIn](https://www.linkedin.com/in/michalpetran)

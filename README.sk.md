@@ -224,4 +224,4 @@ MIT License. Pozri [LICENSE](LICENSE).
 ## Autor
 
 Michal Petrán
-[GitHub](https://github.com/Miclah) · [LinkedIn](https://www.linkedin.com/in/mpetran)
+[GitHub](https://github.com/Miclah) · [LinkedIn](https://www.linkedin.com/in/michalpetran)
